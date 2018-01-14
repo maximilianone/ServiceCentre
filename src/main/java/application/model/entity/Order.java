@@ -14,12 +14,15 @@ public class Order {
     private double price;
     private LocalDate dateOfPlacement;
     private Status status;
-    private enum Status{NEW,
-            ACCEPTED,
-            REJECTED,
-            PERFORMED,
-            FULFILLED,
-            CLOSED}
+
+    private enum Status {
+        NEW,
+        ACCEPTED,
+        REJECTED,
+        PERFORMED,
+        FULFILLED,
+        CLOSED
+    }
 
     public Order() {
     }
@@ -107,8 +110,8 @@ public class Order {
         return status.name();
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setStatus(String status) {
+        this.status = Status.valueOf(status);
     }
 
     @Override

@@ -1,24 +1,20 @@
 package application.controller.requestMapper.impl;
 
 import application.controller.requestMapper.RequestMapper;
-import application.model.entity.Order;
+import application.model.entity.Comment;
 import application.util.PropertyReader;
-import application.util.constants.RequestParameters;
 
 import javax.servlet.http.HttpServletRequest;
-import java.time.LocalDate;
 import java.util.Properties;
 
-public class OrderRequestMapper implements RequestMapper<Order> {
+public class CommentRequestMapper implements RequestMapper<Comment> {
     @Override
-    public Order map(HttpServletRequest request){
+    public Comment map(HttpServletRequest request){
         Properties properties = PropertyReader.readProperties(PARAMETERS);
 
-        String problemDescription = request.getParameter(properties.getProperty(PROBLEM_DESCRIPTION));
         int user_id = Integer.parseInt(request.getParameter(properties.getProperty(USER_ID)));
-
-        return new Order(user_id, problemDescription, LocalDate.now());
+        int order_id = Integer.parseInt(request.getParameter(properties.getProperty(ORDER_ID)));
+        String commentContent = request.getParameter(properties.getProperty(COMMENT_CONTENT));
+        return new Comment(user_id, order_id, commentContent);
     }
-
-
 }

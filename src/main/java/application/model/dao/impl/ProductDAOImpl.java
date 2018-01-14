@@ -24,9 +24,7 @@ public class ProductDAOImpl implements ProductDAO {
                     .getConnection()
                     .prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
             int productId = insert(preparedStatement, product);
-            if (productId > 0) {
-                logger.info("New product is added: " + product);
-            }else throw new ModelException(ADD_PRODUCT_ERROR);
+            logger.info("New product is added: " + product);
             return productId;
         } catch (SQLException | ModelException e) {
             logger.error(ADD_PRODUCT_ERROR);
@@ -43,7 +41,7 @@ public class ProductDAOImpl implements ProductDAO {
             resultSet.next();
             return resultSet.getInt(1);
         } catch (SQLException e) {
-            throw new ModelException(ADD_PRODUCT_ERROR);
+            throw new ModelException(e);
         }
     }
 }

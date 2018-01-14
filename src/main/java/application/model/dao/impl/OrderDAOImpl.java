@@ -23,9 +23,7 @@ public class OrderDAOImpl implements OrderDAO {
         try {
             PreparedStatement preparedStatement = TransactionManager.getInstance().getConnection().prepareStatement(CREATE);
             boolean isAdded = insert(preparedStatement, order);
-            if (isAdded) {
-                logger.info("New order added: " + order);
-            }else throw new ModelException(ADD_ORDER_ERROR);
+            logger.info("New order added: " + order);
             return isAdded;
         } catch (SQLException | ModelException e) {
             logger.error(ADD_ORDER_ERROR);
@@ -43,7 +41,7 @@ public class OrderDAOImpl implements OrderDAO {
             int updateCount = preparedStatement.executeUpdate();
             return (updateCount > 0);
         } catch (SQLException e) {
-            throw new ModelException(ADD_ORDER_ERROR);
+            throw new ModelException(e);
         }
     }
 }

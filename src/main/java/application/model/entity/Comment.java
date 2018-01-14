@@ -1,10 +1,10 @@
 package application.model.entity;
 
 public class Comment {
-    int id;
-    int userID;
-    int orderID;
-    String comment;
+    private int id;
+    private int userID;
+    private int orderID;
+    private String comment;
 
     public Comment(int userID, int orderID, String comment) {
         this.userID = userID;

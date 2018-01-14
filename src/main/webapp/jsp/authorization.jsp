@@ -12,7 +12,7 @@
         <c:if test="${empty sessionScope.user_login}">
     		<div style="float: right;margin-top:50px;padding:0px 10px;">
     			<a href="#login"><fmt:message key="user.login" bundle="${locale}"/></a>
-    			<a  href="register.jsp"><fmt:message key="user.register" bundle="${locale}"/></a>
+    			<a  href="/ServiceCentre/jsp/register.jsp"><fmt:message key="user.register" bundle="${locale}"/></a>
     		</div>
     	</c:if>
 

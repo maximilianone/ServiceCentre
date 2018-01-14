@@ -9,6 +9,7 @@
     <head>
         <title><fmt:message key="title.home" bundle="${locale}"/></title>
         <jsp:include page="/jsp/css.jsp"/>
+        <jsp:include page="/jsp/registrationJS.jsp"/>
     </head>
     <body>
         <jsp:include page="/jsp/navigationBar.jsp"/>
@@ -16,7 +17,7 @@
         <br><div style="padding:20px;margin-top:30px;">
         <center><h1><fmt:message key="registration.title" bundle="${locale}"/></h1></center>
         	<div>
-        		<center><form method="post" action="registration">
+        		<center><form method="post" action="serviceCentre">
         			<fieldset>
         			    <legend><fmt:message key="registration.legend" bundle="${locale}"/></legend>
         				<div>
@@ -42,6 +43,7 @@
         				<input type="password" id="password_confirm" name="password_confirm" pattern="[A-Za-z0-9]{4,30}" required>
         				<br>
         				<br>
+        				<input type="hidden" name="command" value ="registration"">
         				<center><button class="button" id="btnSubmit" type="submit">
         				<fmt:message key="user.register" bundle="${locale}"/></button></center>
         				<br>

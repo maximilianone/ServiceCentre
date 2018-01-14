@@ -13,6 +13,13 @@
     <body>
     <jsp:include page="/jsp/navigationBar.jsp"/>
     <jsp:include page="/jsp/authorization.jsp"/>
-    <centre><h2><fmt:message key="error" bundle="${locale}"/></h2></centre>
+    <c:choose>
+        <c:when test="${empty error}">
+            <centre><h2><fmt:message key="error.message" bundle="${locale}"/></h2></centre>
+        </c:when>
+        <c:otherwise>
+            <centre><h2><c:out value="${error}" /></h2></centre>
+        </c:otherwise>
+    </c:choose>
     </body>
 </html>

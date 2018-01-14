@@ -50,7 +50,7 @@ alter table orders add constraint fk_master_id foreign key (master_id) reference
 alter table orders add constraint fk_manager_id foreign key (manager_id) references users(user_id);
 alter table orders add constraint fk_product_id foreign key (product_id) references product(product_id);
 
-create table comments(
+create table Comments(
 comment_id integer  not null primary key AUTO_INCREMENT,
 order_id integer  not null,
 user_id integer  not null,

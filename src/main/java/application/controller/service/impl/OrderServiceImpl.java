@@ -11,14 +11,14 @@ import application.model.exception.ModelException;
 import java.sql.Connection;
 
 public class OrderServiceImpl implements OrderService {
-    private DAO<Boolean, Order> orderDAO = new OrderDAOImpl();
+    private DAO<Boolean, Order> orderDAO;
 
     public OrderServiceImpl(OrderDAO orderDAO) {
         this.orderDAO = orderDAO;
     }
 
     @Override
-    public boolean addOrder(Order order) throws ModelException {
+    public Boolean add(Order order) throws ModelException {
         TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
         boolean isAdded = orderDAO.create(order);
         TransactionManager.commit();

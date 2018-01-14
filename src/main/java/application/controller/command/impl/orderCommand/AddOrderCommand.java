@@ -6,12 +6,10 @@ import application.controller.requestMapper.impl.OrderRequestMapper;
 import application.controller.requestMapper.impl.ProductRequestMapper;
 import application.controller.service.abstraction.OrderService;
 import application.controller.service.abstraction.ProductService;
-import application.controller.service.impl.OrderServiceImpl;
-import application.controller.service.impl.ProductServiceImpl;
+import application.controller.service.abstraction.Service;
 import application.model.entity.Order;
 import application.model.entity.Product;
 import application.model.exception.ModelException;
-import application.util.constants.ErrorMessages;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddOrderCommand implements Command {
-    private ProductService productService;
-    private OrderService orderService;
+    private Service<Integer, Product> productService;
+    private Service<Boolean, Order> orderService;
     private RequestMapper<Product> productRequestMapper;
     private RequestMapper<Order> orderRequestMapper;
 
@@ -48,12 +46,12 @@ public class AddOrderCommand implements Command {
     }
 
     private int addProduct(Product product) throws IOException, ServletException, ModelException {
-        return productService.addProduct(product);
+        return productService.add(product);
     }
 
     private void addOrder(HttpServletRequest request, HttpServletResponse response, Order order)
             throws IOException, ServletException, ModelException {
-        orderService.addOrder(order);
+        orderService.add(order);
         response.sendRedirect(request.getContextPath() + "/jsp/successOrderCreation.jsp");
     }
 }

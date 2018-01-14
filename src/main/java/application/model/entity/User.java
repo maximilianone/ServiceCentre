@@ -1,14 +1,14 @@
 package application.model.entity;
 
 public class User {
-    int id;
-    String firstName;
-    String lastName;
-    String email;
-    String phone;
-    String login;
-    String password;
-    Role role;
+    private int id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String phone;
+    private String login;
+    private String password;
+    private Role role;
 
     private enum Role {client, admin, main_admin, master}
 

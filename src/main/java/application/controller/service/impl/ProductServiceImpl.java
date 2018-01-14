@@ -11,14 +11,14 @@ import application.model.exception.ModelException;
 import java.sql.Connection;
 
 public class ProductServiceImpl implements ProductService {
-    private DAO<Integer, Product> productDao = new ProductDAOImpl();
+    private DAO<Integer, Product> productDao;
 
     public ProductServiceImpl(ProductDAO productDao) {
         this.productDao = productDao;
     }
 
     @Override
-    public int addProduct(Product product) throws ModelException{
+    public Integer add(Product product) throws ModelException{
         TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
         int productId = productDao.create(product);
         TransactionManager.commit();
