@@ -1,5 +1,6 @@
 package application.model.dao.impl;
 
+import application.controller.mapper.Mapper;
 import application.model.dao.abstraction.CommentDAO;
 import application.model.dao.transaction.TransactionManager;
 import application.model.entity.Comment;
@@ -8,7 +9,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class CommentDAOImpl implements CommentDAO{
     private static Logger logger = LogManager.getLogger(CommentDAOImpl.class.getName());
@@ -16,30 +22,41 @@ public class CommentDAOImpl implements CommentDAO{
     private static final String CREATE = "INSERT INTO Comments(user_id, order_id, comment_content) " +
             "VALUES(?, ?, ?)";
 
+    private static final String SELECT_ALL = "SELECT * FROM Comments";
+
+    private Mapper<Comment, ResultSet> mapper;
+
+    public CommentDAOImpl(Mapper<Comment, ResultSet> mapper){
+        this.mapper = mapper;
+    }
+
+    public CommentDAOImpl(){}
+
     @Override
-    public Boolean create(Comment comment) {
+    public Integer create(Comment comment) {
         try {
-            PreparedStatement preparedStatement = TransactionManager.getInstance()
-                    .getConnection()
-                    .prepareStatement(CREATE);
-            boolean isAdded = insert(preparedStatement, comment);
+            Map<Integer, Object> parameterMap = new HashMap<>();
+            parameterMap.put(1, comment.getUserID());
+            parameterMap.put(2, comment.getOrderID());
+            parameterMap.put(3, comment.getComment());
+            int newID = DAOTemplate.executeInsert(CREATE, parameterMap);
             logger.info("New comment added: " + comment);
-            return isAdded;
+            return newID;
         }catch (SQLException| ModelException e) {
             logger.error(ADD_COMMENT_ERROR);
             throw new ModelException(ADD_COMMENT_ERROR);
         }
     }
 
-    private boolean insert(PreparedStatement preparedStatement, Comment comment){
+    @Override
+    public List<Comment> getAll(){
         try {
-            preparedStatement.setInt(1, comment.getUserID());
-            preparedStatement.setInt(2, comment.getOrderID());
-            preparedStatement.setString(3, comment.getComment());
-            int updateCount = preparedStatement.executeUpdate();
-            return (updateCount > 0);
-        }catch (SQLException e) {
-            throw new ModelException(e);
+            List<Comment> commentList = DAOTemplate.selectAll(mapper, SELECT_ALL);
+            logger.info("All comments were shown");
+            return commentList;
+        } catch (ModelException e){
+            logger.error(COMMENT_SELECT_ERROR);
+            throw new ModelException(COMMENT_SELECT_ERROR);
         }
     }
 }

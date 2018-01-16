@@ -1,7 +1,7 @@
 package application.controller.command.impl.orderCommand;
 
-import application.controller.requestMapper.impl.OrderRequestMapper;
-import application.controller.requestMapper.impl.ProductRequestMapper;
+import application.controller.mapper.request.OrderRequestMapper;
+import application.controller.mapper.request.ProductRequestMapper;
 import application.controller.service.abstraction.OrderService;
 import application.controller.service.abstraction.ProductService;
 import application.model.entity.Order;
@@ -49,7 +49,7 @@ public class AddOrderCommandTest {
     private Product product = new Product();
 
     @Test
-    public void shouldCreateOrderWithProductAndRedirectToIndex1() throws Exception {
+    public void shouldCreateOrderWithProductAndRedirectToIndex() throws Exception {
         // Given
         when(productRequestMapper.map(request)).thenReturn(product);
         when(orderRequestMapper.map(request)).thenReturn(order);

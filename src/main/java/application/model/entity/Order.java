@@ -27,91 +27,61 @@ public class Order {
     public Order() {
     }
 
-    public Order(int userID, String problemDescription, LocalDate dateOfPlacement) {
-        this.userID = userID;
-        this.problemDescription = problemDescription;
-        this.dateOfPlacement = dateOfPlacement;
-        this.status = Status.NEW;
+    public Order(Builder builder) {
+        this.orderID = builder.orderID;
+        this.userID = builder.userID;
+        this.productID = builder.productID;
+        this.masterID = builder.masterID;
+        this.managerID = builder.managerID;
+        this.problemDescription = builder.problemDescription;
+        this.rejectionReason = builder.rejectionReason;
+        this.price = builder.price;
+        this.dateOfPlacement = builder.dateOfPlacement;
+        this.status = builder.status;
     }
 
     public int getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
-    }
-
     public int getUserID() {
         return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
     }
 
     public int getProductID() {
         return productID;
     }
 
-    public void setProductID(int productID) {
-        this.productID = productID;
-    }
-
     public int getMasterID() {
         return masterID;
-    }
-
-    public void setMasterID(int masterID) {
-        this.masterID = masterID;
     }
 
     public int getManagerID() {
         return managerID;
     }
 
-    public void setManagerID(int managerID) {
-        this.managerID = managerID;
-    }
-
     public String getProblemDescription() {
         return problemDescription;
-    }
-
-    public void setProblemDescription(String problemDescription) {
-        this.problemDescription = problemDescription;
     }
 
     public String getRejectionReason() {
         return rejectionReason;
     }
 
-    public void setRejectionReason(String rejectionReason) {
-        this.rejectionReason = rejectionReason;
-    }
-
     public double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
     public java.sql.Date getDateOfPlacement() {
-        return java.sql.Date.valueOf(dateOfPlacement);
-    }
-
-    public void setDateOfPlacement(LocalDate dateOfPlacement) {
-        this.dateOfPlacement = dateOfPlacement;
+        return java.sql.Date.valueOf(this.dateOfPlacement);
     }
 
     public String getStatus() {
         return status.name();
     }
 
-    public void setStatus(String status) {
-        this.status = Status.valueOf(status);
+    public void setProductID(int productID) {
+        this.productID = productID;
     }
 
     @Override
@@ -168,5 +138,72 @@ public class Order {
                 ", dateOfPlacement=" + dateOfPlacement +
                 ", status=" + status +
                 '}';
+    }
+
+    public static class Builder {
+        private int orderID;
+        private int userID;
+        private int productID;
+        private int masterID;
+        private int managerID;
+        private String problemDescription;
+        private String rejectionReason;
+        private double price;
+        private LocalDate dateOfPlacement;
+        private Status status;
+
+        public Builder setOrderID(int orderID) {
+            this.orderID = orderID;
+            return this;
+        }
+
+        public Builder setUserID(int userID) {
+            this.userID = userID;
+            return this;
+        }
+
+        public Builder setProductID(int productID) {
+            this.productID = productID;
+            return this;
+        }
+
+        public Builder setMasterID(int masterID) {
+            this.masterID = masterID;
+            return this;
+        }
+
+        public Builder setManagerID(int managerID) {
+            this.managerID = managerID;
+            return this;
+        }
+
+        public Builder setProblemDescription(String problemDescription) {
+            this.problemDescription = problemDescription;
+            return this;
+        }
+
+        public Builder setRejectionReason(String rejectionReason) {
+            this.rejectionReason = rejectionReason;
+            return this;
+        }
+
+        public Builder setPrice(double price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder setDateOfPlacement(LocalDate dateOfPlacement) {
+            this.dateOfPlacement = dateOfPlacement;
+            return this;
+        }
+
+        public Builder setStatus(String status) {
+            this.status = Status.valueOf(status.toUpperCase());
+            return this;
+        }
+
+        public Order build(){
+            return new Order(this);
+        }
     }
 }

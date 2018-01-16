@@ -5,24 +5,34 @@ import application.model.dao.abstraction.DAO;
 import application.model.dao.abstraction.OrderDAO;
 import application.model.dao.impl.OrderDAOImpl;
 import application.model.dao.transaction.TransactionManager;
+import application.model.entity.FullOrder;
 import application.model.entity.Order;
 import application.model.exception.ModelException;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class OrderServiceImpl implements OrderService {
-    private DAO<Boolean, Order> orderDAO;
+    private OrderDAO orderDAO;
 
     public OrderServiceImpl(OrderDAO orderDAO) {
         this.orderDAO = orderDAO;
     }
 
     @Override
-    public Boolean add(Order order) throws ModelException {
+    public Integer add(Order order) throws ModelException {
         TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
-        boolean isAdded = orderDAO.create(order);
+        int orderID = orderDAO.create(order);
         TransactionManager.commit();
-        return isAdded;
+        return orderID;
+    }
+
+    @Override
+    public List<FullOrder> getAll(){
+        TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
+        List<FullOrder> orderList = orderDAO.getAll();
+        TransactionManager.commit();
+        return orderList;
     }
 
 }

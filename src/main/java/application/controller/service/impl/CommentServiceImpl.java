@@ -8,19 +8,28 @@ import application.model.entity.Comment;
 import application.model.exception.ModelException;
 
 import java.sql.Connection;
+import java.util.List;
 
 public class CommentServiceImpl implements CommentService{
-    private DAO<Boolean, Comment> commentDAO;
+    private CommentDAO commentDAO;
 
     public CommentServiceImpl(CommentDAO commentDAO){
         this.commentDAO = commentDAO;
     }
 
     @Override
-    public Boolean add(Comment comment) throws ModelException {
+    public Integer add(Comment comment) throws ModelException {
         TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
-        boolean isAdded = commentDAO.create(comment);
+        int commentId = commentDAO.create(comment);
         TransactionManager.commit();
-        return isAdded;
+        return commentId;
+    }
+
+    @Override
+    public List<Comment> getAll(){
+        TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
+        List<Comment> commentList = commentDAO.getAll();
+        TransactionManager.commit();
+        return commentList;
     }
 }

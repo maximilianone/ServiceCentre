@@ -17,4 +17,8 @@ public interface ErrorMessages {
     String INVALID_COMMAND = "Error! Invalid Command";
     String LOGIN_EXIST_ERROR = "Error! User with this login already exist, try other";
     String ADD_COMMENT_ERROR = "Error! Failed to add new comment";
+
+    String USER_SELECT_ERROR = "Error! Failed to read user info from database";
+    String ORDER_SELECT_ERROR = "Error! Failed to read order info from database";
+    String COMMENT_SELECT_ERROR = "Error! Failed to read comment info from database";
 }

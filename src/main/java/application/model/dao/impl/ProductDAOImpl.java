@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProductDAOImpl implements ProductDAO {
     private static Logger logger = LogManager.getLogger(ProductDAOImpl.class.getName());
@@ -20,28 +22,15 @@ public class ProductDAOImpl implements ProductDAO {
     @Override
     public Integer create(Product product) {
         try {
-            PreparedStatement preparedStatement = TransactionManager.getInstance()
-                    .getConnection()
-                    .prepareStatement(CREATE, Statement.RETURN_GENERATED_KEYS);
-            int productId = insert(preparedStatement, product);
+            Map<Integer, Object> parameterMap = new HashMap<>();
+            parameterMap.put(1, product.getProductName());
+            parameterMap.put(2, product.getProductType());
+            int newID = DAOTemplate.executeInsert(CREATE, parameterMap);
             logger.info("New product is added: " + product);
-            return productId;
+            return newID;
         } catch (SQLException | ModelException e) {
             logger.error(ADD_PRODUCT_ERROR);
             throw new ModelException(ADD_PRODUCT_ERROR);
-        }
-    }
-
-    private int insert(PreparedStatement preparedStatement, Product product) {
-        try {
-            preparedStatement.setString(1, product.getProductName());
-            preparedStatement.setString(2, product.getProductType());
-            preparedStatement.executeUpdate();
-            ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            resultSet.next();
-            return resultSet.getInt(1);
-        } catch (SQLException e) {
-            throw new ModelException(e);
         }
     }
 }

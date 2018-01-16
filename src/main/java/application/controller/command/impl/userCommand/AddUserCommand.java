@@ -1,8 +1,8 @@
 package application.controller.command.impl.userCommand;
 
 import application.controller.command.Command;
-import application.controller.requestMapper.RequestMapper;
-import application.controller.requestMapper.impl.UserRequestMapper;
+import application.controller.mapper.Mapper;
+import application.controller.mapper.request.UserRequestMapper;
 import application.controller.service.abstraction.Service;
 import application.controller.service.abstraction.UserService;
 import application.model.entity.User;
@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddUserCommand implements Command {
-    private Service<Boolean, User> userService;
-    private RequestMapper<User> userRequestMapper;
+    private Service<User> userService;
+    private Mapper<User, HttpServletRequest> userRequestMapper;
 
     public AddUserCommand(UserService userService, UserRequestMapper userRequestMapper)
     {
@@ -37,7 +37,7 @@ public class AddUserCommand implements Command {
         }
     }
 
-    private boolean addUser(User user)
+    private int addUser(User user)
             throws IOException, ServletException, ModelException {
         return userService.add(user);
     }

@@ -1,9 +1,9 @@
 package application.controller.command.impl.orderCommand;
 
 import application.controller.command.Command;
-import application.controller.requestMapper.RequestMapper;
-import application.controller.requestMapper.impl.OrderRequestMapper;
-import application.controller.requestMapper.impl.ProductRequestMapper;
+import application.controller.mapper.Mapper;
+import application.controller.mapper.request.OrderRequestMapper;
+import application.controller.mapper.request.ProductRequestMapper;
 import application.controller.service.abstraction.OrderService;
 import application.controller.service.abstraction.ProductService;
 import application.controller.service.abstraction.Service;
@@ -17,10 +17,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddOrderCommand implements Command {
-    private Service<Integer, Product> productService;
-    private Service<Boolean, Order> orderService;
-    private RequestMapper<Product> productRequestMapper;
-    private RequestMapper<Order> orderRequestMapper;
+    private Service<Product> productService;
+    private Service<Order> orderService;
+    private Mapper<Product, HttpServletRequest> productRequestMapper;
+    private Mapper<Order, HttpServletRequest> orderRequestMapper;
 
     public AddOrderCommand(ProductService productService, OrderService orderService,
                            ProductRequestMapper productRequestMapper, OrderRequestMapper orderRequestMapper) {

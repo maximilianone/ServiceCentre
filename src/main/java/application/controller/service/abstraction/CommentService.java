@@ -2,8 +2,11 @@ package application.controller.service.abstraction;
 
 import application.model.entity.Comment;
 
-public interface CommentService extends Service<Boolean, Comment>{
-    @Override
-    Boolean add(Comment comment);
+import java.util.List;
 
+public interface CommentService extends Service<Comment>{
+    @Override
+    Integer add(Comment comment);
+
+    List<Comment> getAll();
 }

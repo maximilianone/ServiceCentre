@@ -10,80 +10,49 @@ public class User {
     private String password;
     private Role role;
 
-    private enum Role {client, admin, main_admin, master}
+    private enum Role {CLIENT, ADMIN, MAIN_ADMIN, MASTER}
 
-    public User(String firstName, String lastName, String email, String phone, String login, String password) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.phone = phone;
-        this.login = login;
-        this.password = password;
-        this.role = Role.client;
+    public User(Builder builder) {
+        this.id = builder.id;
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
+        this.phone = builder.phone;
+        this.login = builder.login;
+        this.password = builder.password;
+        this.role = builder.role;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getEmail() {
         return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getPhone() {
         return phone;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public String getLogin() {
         return login;
-    }
-
-    public void setLogin(String login) {
-        this.login = login;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
     public String getRole() {
         return role.name();
-    }
-
-    public void setRole(String role) {
-        this.role = Role.valueOf(role);
     }
 
     @Override
@@ -129,4 +98,61 @@ public class User {
                 ", role=" + role +
                 '}';
     }
+
+    public static class Builder {
+        private int id;
+        private String firstName;
+        private String lastName;
+        private String email;
+        private String phone;
+        private String login;
+        private String password;
+        private Role role;
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
+
+        public Builder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
+
+        public Builder setEmail(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder setPhone(String phone) {
+            this.phone = phone;
+            return this;
+        }
+
+        public Builder setLogin(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public Builder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public Builder setRole(String role) {
+            this.role = Role.valueOf(role.toUpperCase());
+            return this;
+        }
+
+        public User build() {
+            return new User(this);
+        }
+    }
+
+
 }

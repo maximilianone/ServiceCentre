@@ -8,33 +8,22 @@ public class Product {
     public Product() {
     }
 
-    public Product(String productName, String productType) {
-        this.productName = productName;
-        this.productType = productType;
+    public Product(Builder builder) {
+        this.id = builder.id;
+        this.productName = builder.productName;
+        this.productType = builder.productType;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getProductName() {
         return productName;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
-    }
-
     public String getProductType() {
         return productType;
-    }
-
-    public void setProductType(String productType) {
-        this.productType = productType;
     }
 
     @Override
@@ -61,5 +50,30 @@ public class Product {
                 "productName='" + productName + '\'' +
                 ", productType='" + productType + '\'' +
                 '}';
+    }
+
+    public static class Builder{
+        private int id;
+        private String productName;
+        private String productType;
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setProductName(String productName) {
+            this.productName = productName;
+            return this;
+        }
+
+        public Builder setProductType(String productType) {
+            this.productType = productType;
+            return this;
+        }
+
+        public Product build() {
+            return new Product(this);
+        }
     }
 }

@@ -19,7 +19,7 @@ public class TransactionManager implements ErrorMessages {
     private TransactionManager() {
     }
 
-    public DBConnection getConnection(){
+    public static DBConnection getConnection(){
         return connectionThreadLocal.get();
     }
 

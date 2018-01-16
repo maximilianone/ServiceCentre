@@ -6,42 +6,27 @@ public class Comment {
     private int orderID;
     private String comment;
 
-    public Comment(int userID, int orderID, String comment) {
-        this.userID = userID;
-        this.orderID = orderID;
-        this.comment = comment;
+    public Comment(Builder builder) {
+        this.id = builder.id;
+        this.userID = builder.userID;
+        this.orderID = builder.orderID;
+        this.comment = builder.comment;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public int getUserID() {
         return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
     }
 
     public int getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
-    }
-
     public String getComment() {
         return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
     }
 
     @Override
@@ -74,5 +59,36 @@ public class Comment {
                 ", orderID=" + orderID +
                 ", comment='" + comment + '\'' +
                 '}';
+    }
+
+    public static class Builder{
+        private int id;
+        private int userID;
+        private int orderID;
+        private String comment;
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setUserID(int userID) {
+            this.userID = userID;
+            return this;
+        }
+
+        public Builder setOrderID(int orderID) {
+            this.orderID = orderID;
+            return this;
+        }
+
+        public Builder setComment(String comment) {
+            this.comment = comment;
+            return this;
+        }
+
+        public Comment build(){
+            return new Comment(this);
+        }
     }
 }

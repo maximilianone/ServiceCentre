@@ -27,7 +27,7 @@
                 </select>
     			<br>
     			<fmt:message key="order.info.product.name" bundle="${locale}"/><br>
-    			<input type="text" name="productName" pattern="[A-Za-z0-9]{2,40}" required>
+    			<input type="text" name="productName" pattern="[A-ZА-яа-яa-z0-9]{2,40}" required>
     			<br>
     			<fmt:message key="order.info.problem" bundle="${locale}"/><br>
                 <textarea name="problemDescription" rows="10" cols="45" required></textarea>

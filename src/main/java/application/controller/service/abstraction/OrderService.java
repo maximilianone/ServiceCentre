@@ -1,8 +1,13 @@
 package application.controller.service.abstraction;
 
+import application.model.entity.FullOrder;
 import application.model.entity.Order;
 
-public interface OrderService extends Service<Boolean, Order>{
+import java.util.List;
+
+public interface OrderService extends Service<Order>{
     @Override
-    Boolean add(Order order);
+    Integer add(Order order);
+
+    List<FullOrder> getAll();
 }

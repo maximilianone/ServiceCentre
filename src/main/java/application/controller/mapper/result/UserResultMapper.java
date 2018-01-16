@@ -1,0 +1,32 @@
+package application.controller.mapper.result;
+
+import application.controller.mapper.Mapper;
+import application.model.entity.User;
+import application.model.exception.ModelException;
+import application.util.constants.DBParameters;
+import application.util.constants.ErrorMessages;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class UserResultMapper implements Mapper<User, ResultSet>, DBParameters {
+
+    @Override
+    public User map(ResultSet resultSet){
+        try {
+            return new User.Builder()
+                    .setId(resultSet.getInt(USER_ID))
+                    .setFirstName(resultSet.getString(FIRST_NAME))
+                    .setLastName(resultSet.getString(LAST_NAME))
+                    .setLogin(resultSet.getString(LOGIN))
+                    .setPassword(resultSet.getString(PASSWORD))
+                    .setEmail(resultSet.getString(EMAIL))
+                    .setPhone(resultSet.getString(PHONE))
+                    .setRole(resultSet.getString(ROLE))
+                    .build();
+        } catch (SQLException e) {
+            throw new ModelException(e);
+        }
+
+    }
+}

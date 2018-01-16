@@ -1,5 +1,5 @@
 package application.controller.service.abstraction;
 
-public interface Service<R, P> {
-    R add(P p);
+public interface Service<P> {
+    Integer add(P p);
 }

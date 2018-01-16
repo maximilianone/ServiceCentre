@@ -9,6 +9,7 @@
     <head>
     </head>
     <body>
+
         <c:if test="${empty sessionScope.user_login}">
     		<div style="float: right;margin-top:50px;padding:0px 10px;">
     			<a href="#login"><fmt:message key="user.login" bundle="${locale}"/></a>

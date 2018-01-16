@@ -1,8 +1,13 @@
 package application.model.dao.abstraction;
 
+import application.model.entity.FullOrder;
 import application.model.entity.Order;
 
-public interface OrderDAO extends DAO<Boolean, Order> {
+import java.util.List;
+
+public interface OrderDAO extends DAO<Order> {
     @Override
-    Boolean create(Order order);
+    Integer create(Order order);
+
+    List<FullOrder> getAll();
 }

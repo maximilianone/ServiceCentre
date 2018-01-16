@@ -11,7 +11,7 @@ import application.model.exception.ModelException;
 import java.sql.Connection;
 
 public class ProductServiceImpl implements ProductService {
-    private DAO<Integer, Product> productDao;
+    private DAO<Product> productDao;
 
     public ProductServiceImpl(ProductDAO productDao) {
         this.productDao = productDao;

@@ -1,8 +1,8 @@
 package application.controller.command.impl.commentCommand;
 
 import application.controller.command.Command;
-import application.controller.requestMapper.RequestMapper;
-import application.controller.requestMapper.impl.CommentRequestMapper;
+import application.controller.mapper.Mapper;
+import application.controller.mapper.request.CommentRequestMapper;
 import application.controller.service.abstraction.CommentService;
 import application.controller.service.abstraction.Service;
 import application.model.entity.Comment;
@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddCommentCommand implements Command {
-    private Service<Boolean, Comment> commentService;
-    private RequestMapper<Comment> commentRequestMapper;
+    private Service<Comment> commentService;
+    private Mapper<Comment, HttpServletRequest> commentRequestMapper;
 
     public AddCommentCommand(CommentService commentService, CommentRequestMapper commentRequestMapper) {
         this.commentService = commentService;

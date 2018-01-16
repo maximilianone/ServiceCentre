@@ -2,6 +2,8 @@ package application.model.dao.abstraction;
 
 import application.util.constants.ErrorMessages;
 
-public interface DAO<R, E> extends ErrorMessages {
-    R create(E e);
+
+public interface DAO<E> extends ErrorMessages {
+    Integer create(E e);
+
 }
