@@ -1,6 +1,6 @@
 package application.model.dao.abstraction;
 
-import application.model.entity.FullOrder;
+import application.model.dto.FullOrder;
 import application.model.entity.Order;
 
 import java.util.List;
@@ -10,4 +10,8 @@ public interface OrderDAO extends DAO<Order> {
     Integer create(Order order);
 
     List<FullOrder> getAll();
+
+    List<FullOrder> getGroupByUserId(int userId);
+
+    List<FullOrder> getGroupByStatus(String status);
 }

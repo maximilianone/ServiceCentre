@@ -11,8 +11,7 @@
         <jsp:include page="/jsp/css.jsp"/>
     </head>
     <body>
-        <jsp:include page="/jsp/navigationBar.jsp"/>
-        <jsp:include page="/jsp/authorization.jsp"/>
+        <jsp:include page="/jsp/header.jsp"/>
         <centre><h2><fmt:message key="order.add.status.success" bundle="${locale}"/></h2></centre>
     </body>
 </html>

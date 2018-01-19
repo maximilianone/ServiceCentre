@@ -1,7 +1,7 @@
 package application.controller.mapper.result;
 
 import application.controller.mapper.Mapper;
-import application.model.entity.FullOrder;
+import application.model.dto.FullOrder;
 import application.model.entity.Order;
 import application.model.entity.Product;
 import application.model.exception.ModelException;
@@ -16,7 +16,7 @@ public class FullOrderResultMapper implements Mapper<FullOrder, ResultSet>, DBPa
         try {
             Order order = new Order.Builder()
                     .setOrderID(resultSet.getInt(ORDER_ID))
-                    .setUserID(resultSet.getInt(USER_ID))
+                    .setUserID(resultSet.getInt(DB_USER_ID))
                     .setProductID(resultSet.getInt(PRODUCT_ID))
                     .setManagerID(resultSet.getInt(MANAGER_ID))
                     .setMasterID(resultSet.getInt(MANAGER_ID))

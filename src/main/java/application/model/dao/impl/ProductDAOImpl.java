@@ -33,4 +33,20 @@ public class ProductDAOImpl implements ProductDAO {
             throw new ModelException(ADD_PRODUCT_ERROR);
         }
     }
+
+    @Override
+    public Boolean update(int productID, Object newValue, String fieldName) {
+        try {
+            boolean updateStatus = DAOTemplate.executeUpdate(createUpdateQuery(fieldName), productID, newValue);
+            logger.info("Product with id " + productID + " updated");
+            return updateStatus;
+        } catch (ModelException e) {
+            logger.error(PRODUCT_UPDATE_ERROR);
+            throw new ModelException(PRODUCT_UPDATE_ERROR);
+        }
+    }
+
+    private String createUpdateQuery(String fieldName) {
+        return "Update PRODUCT SET " + fieldName + " = ? WHERE product_id = ?";
+    }
 }

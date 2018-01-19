@@ -11,7 +11,6 @@
         <jsp:include page="/jsp/css.jsp"/>
     </head>
     <body>
-        <jsp:include page="/jsp/navigationBar.jsp"/>
-        <jsp:include page="/jsp/authorization.jsp"/>
+        <jsp:include page="/jsp/header.jsp"/>
     </body>
 </html>

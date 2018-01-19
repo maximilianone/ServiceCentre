@@ -7,9 +7,11 @@ public interface RequestParameters {
     String USER_FIRST_NAME = "firstName";
     String USER_LAST_NAME ="lastName";
     String USER_LOGIN ="login";
+    String USER_OLD_PASSWORD = "oldPassword";
     String USER_PASSWORD ="password";
     String USER_EMAIL ="email";
     String USER_PHONE ="phone";
+    String USER_ROLE = "role";
 
     String PRODUCT_ID = "productID";
     String PRODUCT_NAME = "productName";
@@ -19,4 +21,5 @@ public interface RequestParameters {
     String ORDER_ID = "orderID";
 
     String COMMENT_CONTENT = "commentContent";
+    String COMMENT_ID = "commentID";
 }

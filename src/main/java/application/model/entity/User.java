@@ -55,6 +55,10 @@ public class User {
         return role.name();
     }
 
+    public void setId(int id){
+        this.id = id;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,6 +112,10 @@ public class User {
         private String login;
         private String password;
         private Role role;
+
+        public Builder(){
+            this.role = Role.CLIENT;
+        }
 
         public Builder setId(int id) {
             this.id = id;

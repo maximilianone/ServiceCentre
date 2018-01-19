@@ -40,6 +40,7 @@ date_of_placement date not null,
 order_status enum('new',
 'accepted',
 'rejected',
+'agreed',
 'performed',
 'fulfilled',
 'closed') not null default 'new');
@@ -54,7 +55,7 @@ create table Comments(
 comment_id integer  not null primary key AUTO_INCREMENT,
 order_id integer  not null,
 user_id integer  not null,
-comment_content varchar(500)  not null);
+comment_content varchar(500)  not null,
+comment_status enum('valid', 'banned') not null default 'valid');
 
-alter table comments add constraint fk_commenter_id foreign key (user_id) references users(user_id);
-alter table comments add constraint fk_order_id foreign key (order_id) references orders(order_id);
+alter table comments add constraint fk_commenter_id foreign key (user_id, order_id) references orders(user_id, order_id);

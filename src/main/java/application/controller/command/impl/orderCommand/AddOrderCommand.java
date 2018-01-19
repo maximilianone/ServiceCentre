@@ -17,14 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class AddOrderCommand implements Command {
-    private Service<Product> productService;
-    private Service<Order> orderService;
+    private OrderService orderService;
     private Mapper<Product, HttpServletRequest> productRequestMapper;
     private Mapper<Order, HttpServletRequest> orderRequestMapper;
 
-    public AddOrderCommand(ProductService productService, OrderService orderService,
+    public AddOrderCommand(OrderService orderService,
                            ProductRequestMapper productRequestMapper, OrderRequestMapper orderRequestMapper) {
-        this.productService = productService;
         this.orderService = orderService;
         this.productRequestMapper = productRequestMapper;
         this.orderRequestMapper = orderRequestMapper;
@@ -36,22 +34,16 @@ public class AddOrderCommand implements Command {
         Product product = productRequestMapper.map(request);
         Order order = orderRequestMapper.map(request);
         try {
-            int productID = addProduct(product);
-            order.setProductID(productID);
-            addOrder(request, response, order);
+            addOrder(request, response, product, order);
         } catch (ModelException e) {
             request.setAttribute("error", e.getMessage());
             request.getRequestDispatcher(ERROR_PAGE).forward(request,response);
         }
     }
 
-    private int addProduct(Product product) throws IOException, ServletException, ModelException {
-        return productService.add(product);
-    }
-
-    private void addOrder(HttpServletRequest request, HttpServletResponse response, Order order)
+    private void addOrder(HttpServletRequest request, HttpServletResponse response, Product product, Order order)
             throws IOException, ServletException, ModelException {
-        orderService.add(order);
+        orderService.add(product, order);
         response.sendRedirect(request.getContextPath() + "/jsp/successOrderCreation.jsp");
     }
 }

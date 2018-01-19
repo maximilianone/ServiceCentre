@@ -10,7 +10,7 @@ import application.model.dao.impl.UserDAOImpl;
 
 public class Test {
     public static void main(String[] args) {
-        OrderService userService = new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()));
-        System.out.println(userService.getAll());
+        UserService userService = new UserServiceImpl(new UserDAOImpl(new UserResultMapper()));
+        System.out.println(userService.authorization("Garret", "admin"));
     }
 }

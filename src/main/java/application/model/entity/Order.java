@@ -19,6 +19,7 @@ public class Order {
         NEW,
         ACCEPTED,
         REJECTED,
+        AGREED,
         PERFORMED,
         FULFILLED,
         CLOSED
@@ -151,6 +152,10 @@ public class Order {
         private double price;
         private LocalDate dateOfPlacement;
         private Status status;
+
+        public Builder(){
+            this.status = Status.NEW;
+        }
 
         public Builder setOrderID(int orderID) {
             this.orderID = orderID;

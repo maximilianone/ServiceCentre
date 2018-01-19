@@ -12,10 +12,9 @@ import java.util.Properties;
 public class OrderRequestMapper implements Mapper<Order, HttpServletRequest>, RequestParameters {
     @Override
     public Order map(HttpServletRequest request){
-        Properties properties = PropertyReader.readProperties(PARAMETERS);
 
         String problemDescription = request.getParameter(PROBLEM_DESCRIPTION);
-        int user_id = Integer.parseInt(request.getParameter(properties.getProperty(USER_ID)));
+        int user_id = (Integer) request.getSession().getAttribute(USER_ID);
         return new Order.Builder()
                 .setProblemDescription(problemDescription)
                 .setUserID(user_id)

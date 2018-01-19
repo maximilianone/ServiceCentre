@@ -11,8 +11,7 @@
         <jsp:include page="/jsp/css.jsp"/>
     </head>
     <body>
-    <jsp:include page="/jsp/navigationBar.jsp"/>
-    <jsp:include page="/jsp/authorization.jsp"/>
+        <jsp:include page="/jsp/header.jsp"/>
     <c:choose>
         <c:when test="${empty error}">
             <centre><h2><fmt:message key="error.message" bundle="${locale}"/></h2></centre>

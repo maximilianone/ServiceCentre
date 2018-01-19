@@ -1,5 +1,5 @@
 package application.controller.service.abstraction;
 
 public interface Service<P> {
-    Integer add(P p);
+    Boolean update(int id, Object newValue, String fieldName);
 }

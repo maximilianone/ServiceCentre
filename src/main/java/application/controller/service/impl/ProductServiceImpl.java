@@ -19,9 +19,27 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Integer add(Product product) throws ModelException{
-        TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
-        int productId = productDao.create(product);
-        TransactionManager.commit();
-        return productId;
+        try {
+            TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
+            int productId = productDao.create(product);
+            TransactionManager.commit();
+            return productId;
+        }catch (ModelException e){
+            TransactionManager.rollback();
+            throw new ModelException(e);
+        }
+    }
+
+    @Override
+    public Boolean update(int productId, Object newValue, String fieldName){
+        try {
+            TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
+            boolean updateStatus = productDao.update(productId, newValue, fieldName);
+            TransactionManager.commit();
+            return updateStatus;
+        }catch (ModelException e){
+            TransactionManager.rollback();
+            throw new ModelException(e);
+        }
     }
 }

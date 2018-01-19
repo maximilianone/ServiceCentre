@@ -1,13 +1,13 @@
 package application.util.constants;
 
 public interface DBParameters {
-    String USER_ID = "user_id";
-    String FIRST_NAME = "first_name";
-    String LAST_NAME = "last_name";
+    String DB_USER_ID = "user_id";
+    String DB_FIRST_NAME = "first_name";
+    String DB_LAST_NAME = "last_name";
     String LOGIN = "login";
-    String PASSWORD = "user_password";
+    String DB_PASSWORD = "user_password";
     String EMAIL = "email";
-    String PHONE = "phone";
+    String DB_PHONE = "phone";
     String ROLE = "role";
 
     String PRODUCT_ID = "product_id";
@@ -23,7 +23,10 @@ public interface DBParameters {
     String DATE_OF_PLACEMENT = "date_of_placement";
     String ORDER_STATUS = "order_status";
 
-    String COMMENT_ID = "comment_id";
+    String DB_COMMENT_ID = "comment_id";
     String COMMENT_CONTENT = "comment_content";
+    String DB_COMMENT_STATUS = "comment_status";
+
+    String DB_COMMENT_STATUS_BANNED = "banned";
 
 }

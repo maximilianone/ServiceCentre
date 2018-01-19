@@ -1,17 +1,13 @@
 package application.model.dao.impl;
 
-import application.controller.mapper.Mapper;
+import application.controller.mapper.result.CommentResultMapper;
 import application.model.dao.abstraction.CommentDAO;
-import application.model.dao.transaction.TransactionManager;
 import application.model.entity.Comment;
+import application.model.dto.FullComment;
 import application.model.exception.ModelException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,11 +18,12 @@ public class CommentDAOImpl implements CommentDAO{
     private static final String CREATE = "INSERT INTO Comments(user_id, order_id, comment_content) " +
             "VALUES(?, ?, ?)";
 
-    private static final String SELECT_ALL = "SELECT * FROM Comments";
+    private static final String SELECT_ALL = "SELECT * FROM Comments " +
+            "INNER JOIN USERS ON USERS.user_id = COMMENTS.user_id WHERE comments.comment_status='valid'";
 
-    private Mapper<Comment, ResultSet> mapper;
+    private CommentResultMapper mapper;
 
-    public CommentDAOImpl(Mapper<Comment, ResultSet> mapper){
+    public CommentDAOImpl(CommentResultMapper mapper){
         this.mapper = mapper;
     }
 
@@ -42,16 +39,19 @@ public class CommentDAOImpl implements CommentDAO{
             int newID = DAOTemplate.executeInsert(CREATE, parameterMap);
             logger.info("New comment added: " + comment);
             return newID;
-        }catch (SQLException| ModelException e) {
+        }catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e){
+            logger.error("Failed attempt to add comment by user with id "+comment.getUserID());
+            throw new ModelException(ADD_COMMENT_WRONG_ORDER);
+        }catch (ModelException e) {
             logger.error(ADD_COMMENT_ERROR);
             throw new ModelException(ADD_COMMENT_ERROR);
         }
     }
 
     @Override
-    public List<Comment> getAll(){
+    public List<FullComment> getAll(){
         try {
-            List<Comment> commentList = DAOTemplate.selectAll(mapper, SELECT_ALL);
+            List<FullComment> commentList = DAOTemplate.selectAll(mapper, SELECT_ALL);
             logger.info("All comments were shown");
             return commentList;
         } catch (ModelException e){
@@ -59,4 +59,21 @@ public class CommentDAOImpl implements CommentDAO{
             throw new ModelException(COMMENT_SELECT_ERROR);
         }
     }
+
+    @Override
+    public Boolean update(int commentID, Object newValue, String fieldName) {
+        try {
+            boolean updateStatus = DAOTemplate.executeUpdate(createUpdateQuery(fieldName), commentID, newValue);
+            logger.info("Comment with id " + commentID + " updated");
+            return updateStatus;
+        } catch (ModelException e) {
+            logger.error(COMMENT_UPDATE_ERROR);
+            throw new ModelException(COMMENT_UPDATE_ERROR);
+        }
+    }
+
+    private String createUpdateQuery(String fieldName) {
+        return "Update Comments SET " + fieldName + " = ? WHERE comment_id = ?";
+    }
+
 }

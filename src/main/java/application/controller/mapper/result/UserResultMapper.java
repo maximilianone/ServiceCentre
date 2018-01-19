@@ -4,7 +4,6 @@ import application.controller.mapper.Mapper;
 import application.model.entity.User;
 import application.model.exception.ModelException;
 import application.util.constants.DBParameters;
-import application.util.constants.ErrorMessages;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,13 +14,13 @@ public class UserResultMapper implements Mapper<User, ResultSet>, DBParameters {
     public User map(ResultSet resultSet){
         try {
             return new User.Builder()
-                    .setId(resultSet.getInt(USER_ID))
-                    .setFirstName(resultSet.getString(FIRST_NAME))
-                    .setLastName(resultSet.getString(LAST_NAME))
+                    .setId(resultSet.getInt(DB_USER_ID))
+                    .setFirstName(resultSet.getString(DB_FIRST_NAME))
+                    .setLastName(resultSet.getString(DB_LAST_NAME))
                     .setLogin(resultSet.getString(LOGIN))
-                    .setPassword(resultSet.getString(PASSWORD))
+                    .setPassword(resultSet.getString(DB_PASSWORD))
                     .setEmail(resultSet.getString(EMAIL))
-                    .setPhone(resultSet.getString(PHONE))
+                    .setPhone(resultSet.getString(DB_PHONE))
                     .setRole(resultSet.getString(ROLE))
                     .build();
         } catch (SQLException e) {
