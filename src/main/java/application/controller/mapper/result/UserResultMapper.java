@@ -17,7 +17,7 @@ public class UserResultMapper implements Mapper<User, ResultSet>, DBParameters {
                     .setId(resultSet.getInt(DB_USER_ID))
                     .setFirstName(resultSet.getString(DB_FIRST_NAME))
                     .setLastName(resultSet.getString(DB_LAST_NAME))
-                    .setLogin(resultSet.getString(LOGIN))
+                    .setLogin(resultSet.getString(DB_LOGIN))
                     .setPassword(resultSet.getString(DB_PASSWORD))
                     .setEmail(resultSet.getString(EMAIL))
                     .setPhone(resultSet.getString(DB_PHONE))

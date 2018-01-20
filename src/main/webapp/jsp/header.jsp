@@ -5,8 +5,6 @@
 
 <fmt:setBundle basename="locale_info" var="locale"/>
 
-<!DOCTYPE html>
-<html>
     <head>
     <jsp:include page="/jsp/css.jsp"/>
     <script src="/ServiceCentre/js/lang.js"></script>
@@ -51,6 +49,27 @@
                 </c:if>
              </ul>
              <ul class="nav navbar-nav navbar-right">
+
+                    <c:if test="${sessionScope.role =='ADMIN' || sessionScope.role =='MAIN_ADMIN'}">
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><fmt:message key="admin.options" bundle="${locale}"/></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href=""><fmt:message key="admin.show.all.users" bundle="${locale}"/></a></li>
+                        	    <li><a href="serviceCentre?command=showAllOrders&admin=false"><fmt:message key="admin.show.all.orders" bundle="${locale}"/></a></li>
+                        	    <li><a href="serviceCentre?command=showAllOrders&admin=true"><fmt:message key="admin.show.administrated.orders" bundle="${locale}"/></a></li>
+                            </ul>
+                        </li>
+                    </c:if>
+
+                    <c:if test="${sessionScope.role =='MASTER'}">
+                        <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><fmt:message key="master.options" bundle="${locale}"/></span></a>
+                            <ul class="dropdown-menu" role="menu">
+                                <li><a href="#"><fmt:message key="master.show.all.orders" bundle="${locale}"/></a></li>
+                        	    <li><a href="#"><fmt:message key="master.show.executed.orders" bundle="${locale}"/></a></li>
+                            </ul>
+                        </li>
+                    </c:if>
 
                   <li class="dropdown">
                   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span id="lanNavSel">UKR</span> <span class="caret"></span></a>
@@ -120,4 +139,3 @@
        <script src="//code.jquery.com/jquery-1.10.2.min.js"></script>
        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
     </body>
-</html>

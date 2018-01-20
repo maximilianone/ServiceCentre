@@ -19,7 +19,18 @@ public interface RequestParameters {
 
     String PROBLEM_DESCRIPTION = "problemDescription";
     String ORDER_ID = "orderID";
+    String ORDER_STATUS = "status";
+    String ORDER_PRICE = "price";
+    String ORDER_REJECTION_REASON = "rejectionReason";
 
     String COMMENT_CONTENT = "commentContent";
     String COMMENT_ID = "commentID";
+
+    String SEARCH_PARAMETER = "searchParam";
+    String SEARCH_VALUE = "searchVar";
+
+    String ACCEPTED = "accepted";
+    String REJECTED = "rejected";
+
+    String FOR_ADMIN = "admin";
 }

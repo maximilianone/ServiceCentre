@@ -4,7 +4,7 @@ import application.controller.command.impl.InvalidCommand;
 import application.controller.command.impl.commentCommand.AddCommentCommand;
 import application.controller.command.impl.commentCommand.BannCommentCommand;
 import application.controller.command.impl.commentCommand.GetAllCommentsCommand;
-import application.controller.command.impl.orderCommand.AddOrderCommand;
+import application.controller.command.impl.orderCommand.*;
 import application.controller.command.impl.userCommand.*;
 import application.controller.mapper.request.CommentRequestMapper;
 import application.controller.mapper.request.OrderRequestMapper;
@@ -35,6 +35,11 @@ public class CommandFactory {
     private final static String showPersonalPage = "showPersonalPage";
     private final static String changeInfo = "changePersonalInfo";
     private final static String changePassword = "changePassword";
+    private final static String changeOrderStatus = "changeOrderStatus";
+    private final static String searchOrders = "searchOrders";
+    private final static String showOrder = "showOrder";
+    private final static String processNewOrder = "processNewOrder";
+    private final static String showAllOrders = "showAllOrders";
 
     private static CommandFactory ourInstance = new CommandFactory();
 
@@ -56,6 +61,28 @@ public class CommandFactory {
                         new ProductRequestMapper(),
                         new OrderRequestMapper()
                 ));
+
+        commandMap.put(changeOrderStatus,
+                new ChangeOrderStatusCommand(
+                        new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()))
+                ));
+
+        commandMap.put(showAllOrders, new ShowAllOrdersCommand(
+                new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()))
+        ));
+
+        commandMap.put(searchOrders, new SearchOrdersCommand(
+                new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()))
+        ));
+
+        commandMap.put(showOrder, new ShowOrderCommand(
+                new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()))
+        ));
+
+        commandMap.put(processNewOrder, new ProcessNewOrderCommand(
+                new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()))
+        ));
+
         commandMap.put(addUserCommand,
                 new AddUserCommand(
                         new UserServiceImpl(new UserDAOImpl()),
@@ -82,8 +109,8 @@ public class CommandFactory {
         commandMap.put(changePassword,
                 new ChangePasswordCommand(
                         new UserServiceImpl(
-                        new UserDAOImpl(new UserResultMapper())
-                )));
+                                new UserDAOImpl(new UserResultMapper())
+                        )));
 
         commandMap.put(addCommentCommand,
                 new AddCommentCommand(
@@ -95,6 +122,7 @@ public class CommandFactory {
                 new GetAllCommentsCommand(
                         new CommentServiceImpl(new CommentDAOImpl(new CommentResultMapper()))
                 ));
+
 
         commandMap.put(banComment,
                 new BannCommentCommand(

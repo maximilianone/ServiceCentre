@@ -12,13 +12,17 @@
     </head>
     <body>
         <jsp:include page="/jsp/header.jsp"/>
-    <c:choose>
-        <c:when test="${empty error}">
-            <centre><h2><fmt:message key="error.message" bundle="${locale}"/></h2></centre>
-        </c:when>
-        <c:otherwise>
-            <centre><h2><c:out value="${error}" /></h2></centre>
-        </c:otherwise>
-    </c:choose>
+        <div class="container">
+             <div class="row">
+                  <div class="col-xs-12 text-center">
+                        <c:choose>
+                            <c:when test="${empty error}">
+                                <centre><h2><fmt:message key="error.message" bundle="${locale}"/></h2></centre>
+                            </c:when>
+                            <c:otherwise>
+                                <centre><h2><c:out value="${error}" /></h2></centre>
+                            </c:otherwise>
+                        </c:choose>
+         </div></div></div>
     </body>
 </html>

@@ -13,5 +13,7 @@ public interface OrderService extends Service<Object>{
 
     List<FullOrder> getByUserId(int userId);
 
-    List<FullOrder> getByStatus(String status);
+    List<FullOrder> getBy(Object param, String name);
+
+    boolean processNewOrder(int orderID, int userID, String param, Object value, String status);
 }

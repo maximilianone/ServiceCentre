@@ -8,11 +8,12 @@ import application.model.dto.FullOrder;
 import application.model.entity.Order;
 import application.model.entity.Product;
 import application.model.exception.ModelException;
+import application.util.constants.DBParameters;
 
 import java.sql.Connection;
 import java.util.List;
 
-public class OrderServiceImpl implements OrderService {
+public class OrderServiceImpl implements OrderService, DBParameters {
     private OrderDAO orderDAO;
     private ProductDAO productDAO;
 
@@ -69,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
     public List<FullOrder> getByUserId(int userId) {
         try {
             TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
-            List<FullOrder> orderList = orderDAO.getGroupByUserId(userId);
+            List<FullOrder> orderList = orderDAO.getGroupBy(userId, DB_USER_ID);
             TransactionManager.commit();
             return orderList;
         } catch (ModelException e) {
@@ -79,12 +80,29 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<FullOrder> getByStatus(String status) {
+    public List<FullOrder> getBy(Object param, String name) {
         try {
             TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
-            List<FullOrder> orderList = orderDAO.getGroupByStatus(status);
+            List<FullOrder> orderList = orderDAO.getGroupBy(param, name);
             TransactionManager.commit();
             return orderList;
+        } catch (ModelException e) {
+            TransactionManager.rollback();
+            throw new ModelException(e);
+        }
+    }
+
+
+    @Override
+    public boolean processNewOrder(int orderID, int userID,  String param, Object value, String status){
+        try {
+            TransactionManager.runTransaction(Connection.TRANSACTION_SERIALIZABLE);
+            boolean isNew = orderDAO.checkStatus(orderID, DB_ORDER_STATUS_NEW);
+            orderDAO.update(orderID, userID, DBParameters.DB_MANAGER_ID);
+            orderDAO.update(orderID, value, param);
+            orderDAO.update(orderID, status, DB_ORDER_STATUS);
+            TransactionManager.commit();
+            return isNew;
         } catch (ModelException e) {
             TransactionManager.rollback();
             throw new ModelException(e);

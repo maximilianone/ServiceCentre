@@ -20,6 +20,7 @@ public class Order {
         ACCEPTED,
         REJECTED,
         AGREED,
+        WAITING_FOR_MASTER,
         PERFORMED,
         FULFILLED,
         CLOSED

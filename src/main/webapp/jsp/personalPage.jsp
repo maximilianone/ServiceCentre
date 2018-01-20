@@ -74,12 +74,9 @@
             </div>
             </form>
 
-        <c:if test="${!empty sessionScope.orders}">
+        <c:if test="${!empty sessionScope.userOrders}">
             <div style="padding:20px;margin-top:30px;">
                 <h2><fmt:message key="user.page.orders" bundle="${locale}"/></h2>
-                <div>
-                <br>
-                    <center>
             <table class="table">
                 <tr>
                     <th><fmt:message key="user.page.order.id" bundle="${locale}"/> </th>
@@ -92,7 +89,7 @@
                     <th> <fmt:message key="user.page.order.rejection" bundle="${locale}"/> </th>
                 </tr>
 
-                <c:forEach items="${sessionScope.orders}" var="objectList">
+                <c:forEach items="${sessionScope.userOrders}" var="objectList">
                     <tr>
                         <td><c:out value="${objectList.getOrderID()}"/>
                         <td><c:out value="${objectList.getProductName()}"/>
@@ -101,15 +98,28 @@
                         <td><c:out value="${objectList.getDateOfPlacement()}" /></td>
                         <td><c:out value="${objectList.getStatus()}" /></td>
                         <td><c:if test="${objectList.getStatus()!='NEW' && objectList.getStatus()!='REJECTED'}">
-                        <c:out value="${objectList.getPrice()}" /></c:if></td>
+                            <c:out value="${objectList.getPrice()}" /></c:if></td>
                         <td><c:if test="${objectList.getStatus()=='REJECTED'}">
-                        <c:out value="${getRejectionReason()}" /></c:if></td>
+                            <c:out value="${objectList.getRejectionReason()}" /></c:if></td>
+                        <c:if test="${objectList.getStatus()=='ACCEPTED'}">
+                            <td><form method="post" action="serviceCentre">
+                                <input type="hidden" name="orderID" value="${objectList.getOrderID()}"/>
+                                <input type="hidden" name="command" value="changeOrderStatus"/>
+                                <input type="hidden" name="status" value="agreed"/>
+                                <input type="hidden" name="userID" value="${sessionScope.userID}"/>
+                                <button class="btn btn-success" id="btnSubmit" type="submit">
+                                <fmt:message key="user.page.agree" bundle="${locale}"/></button></form></td>
+                            <td><form method="post" action="serviceCentre">
+                                <input type="hidden" name="orderID" value="${objectList.getOrderID()}"/>
+                                <input type="hidden" name="command" value="changeOrderStatus"/>
+                                <input type="hidden" name="status" value="closed"/>
+                                 <input type="hidden" name="userID" value="${sessionScope.userID}"/>
+                                <button class="btn btn-success" id="btnSubmit" type="submit">
+                                <fmt:message key="user.page.decline" bundle="${locale}"/></button></form></td>
+                        </c:if>
                     </tr>
                 </c:forEach>
             </table>
-                    </center>
-                <br><br>
-            </div>
             </div>
             </c:if>
             </c:if>

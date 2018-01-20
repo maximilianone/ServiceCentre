@@ -21,7 +21,17 @@ public class OrderDAOImpl implements OrderDAO {
             " date_of_placement) VALUES(?, ?, ?, ?)";
 
     private static final String SELECT_ALL = "SELECT * FROM ORDERS " +
-            "INNER JOIN PRODUCT ON Orders.product_id=Product.product_id";
+            "INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
+            "INNER JOIN USERS ON USERS.user_id=orders.user_id " +
+            "Left JOIN admin on orders.manager_id = admin.admin_id " +
+            "Left Join masters on orders.master_id = masters.master_id";
+
+    private static final String CHECK_STATUS = "Select * From Orders " +
+            "INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
+            "INNER JOIN USERS ON USERS.user_id=orders.user_id " +
+            "Left JOIN admin on orders.manager_id = admin.admin_id " +
+            "Left Join masters on orders.master_id = masters.master_id "+
+            "where order_id = ? and order_status = ?";
 
     private Mapper<FullOrder, ResultSet> mapper;
 
@@ -77,29 +87,13 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public List<FullOrder> getGroupByUserId(int userId) {
-        String query = createSelectQuery(DB_USER_ID);
+    public List<FullOrder> getGroupBy(Object param, String name) {
+        String query = createSelectQuery(name);
         Map<Integer, Object> parameterMap = new HashMap<>();
-        parameterMap.put(1, userId);
+        parameterMap.put(1, param);
         try {
             List<FullOrder> orderList = DAOTemplate.selectGroup(mapper, query, parameterMap);
-            logger.info("All orders for user_id " + userId + " were shown");
-            return orderList;
-        } catch (ModelException e) {
-            logger.error(ORDER_SELECT_ERROR);
-            e.printStackTrace();
-            throw new ModelException(ORDER_SELECT_ERROR);
-        }
-    }
-
-    @Override
-    public List<FullOrder> getGroupByStatus(String status) {
-        String query = createSelectQuery(ORDER_STATUS);
-        Map<Integer, Object> parameterMap = new HashMap<>();
-        parameterMap.put(1, status);
-        try {
-            List<FullOrder> orderList = DAOTemplate.selectGroup(mapper, query, parameterMap);
-            logger.info("All orders with status -  " + status + ", were shown");
+            logger.info("All found orders were shown");
             return orderList;
         } catch (ModelException e) {
             logger.error(ORDER_SELECT_ERROR);
@@ -113,7 +107,30 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     private String createSelectQuery(String fieldName) {
-        return "Select * from Orders INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
-                "WHERE " + fieldName + " = ?";
+        String query =  "Select * from Orders INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
+                "INNER JOIN USERS ON USERS.user_id=orders.user_id " +
+                "Left JOIN admin on orders.manager_id = admin.admin_id " +
+                "Left Join masters on orders.master_id = masters.master_id ";
+        if(fieldName.equals(DB_LOGIN)){
+            query+="WHERE " + fieldName + " = ?";
+        }else {
+            query+="WHERE orders." + fieldName + " = ?";
+        }
+        return query;
+    }
+
+    @Override
+    public boolean checkStatus(int orderID, String status){
+        try {
+            Map<Integer, Object> parameterMap = new HashMap<>();
+            parameterMap.put(1, orderID);
+            parameterMap.put(2, status);
+            FullOrder order = DAOTemplate.selectOne(CHECK_STATUS, parameterMap, mapper);
+            logger.info("status of order " + orderID + " has been changed");
+            return (order!=null);
+        } catch (ModelException e) {
+            logger.info(FAILED_ATTEMPT_CHANGE_STATUS);
+            throw new ModelException(ALREADY_CHANGED);
+        }
     }
 }

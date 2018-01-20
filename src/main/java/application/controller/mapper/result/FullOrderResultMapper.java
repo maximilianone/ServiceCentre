@@ -15,16 +15,16 @@ public class FullOrderResultMapper implements Mapper<FullOrder, ResultSet>, DBPa
     public FullOrder map(ResultSet resultSet){
         try {
             Order order = new Order.Builder()
-                    .setOrderID(resultSet.getInt(ORDER_ID))
+                    .setOrderID(resultSet.getInt(DB_ORDER_ID))
                     .setUserID(resultSet.getInt(DB_USER_ID))
                     .setProductID(resultSet.getInt(PRODUCT_ID))
-                    .setManagerID(resultSet.getInt(MANAGER_ID))
-                    .setMasterID(resultSet.getInt(MANAGER_ID))
+                    .setManagerID(resultSet.getInt(DB_MANAGER_ID))
+                    .setMasterID(resultSet.getInt(DB_MANAGER_ID))
                     .setProblemDescription(resultSet.getString(PROBLEM_DESCRIPTION))
-                    .setRejectionReason(resultSet.getString(REJECTION_REASON))
-                    .setPrice(resultSet.getDouble(PRICE))
+                    .setRejectionReason(resultSet.getString(DB_REJECTION_REASON))
+                    .setPrice(resultSet.getDouble(DB_PRICE))
                     .setDateOfPlacement(resultSet.getDate(DATE_OF_PLACEMENT).toLocalDate())
-                    .setStatus(resultSet.getString(ORDER_STATUS))
+                    .setStatus(resultSet.getString(DB_ORDER_STATUS))
                     .build();
 
             Product product = new Product.Builder()
@@ -33,7 +33,20 @@ public class FullOrderResultMapper implements Mapper<FullOrder, ResultSet>, DBPa
                     .setProductType(resultSet.getString(PRODUCT_TYPE))
                     .build();
 
-            return new FullOrder(order, product);
+            String login = resultSet.getString(DB_LOGIN);
+            String managerLogin = "";
+            String masterLogin = "";
+
+            if(resultSet.getInt(DB_MANAGER_ID)>0){
+                managerLogin = resultSet.getString(DB_ADMIN_LOGIN);
+            }
+
+            if(resultSet.getInt(DB_MASTER_ID)>0){
+                masterLogin = resultSet.getString(DB_MASTER_LOGIN);
+            }
+
+
+            return new FullOrder(order, product, login, masterLogin, managerLogin);
         } catch (SQLException e) {
             throw new ModelException(e);
         }

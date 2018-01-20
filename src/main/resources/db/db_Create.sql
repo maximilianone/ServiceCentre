@@ -41,6 +41,7 @@ order_status enum('new',
 'accepted',
 'rejected',
 'agreed',
+'waiting_for_master',
 'performed',
 'fulfilled',
 'closed') not null default 'new');
@@ -59,3 +60,11 @@ comment_content varchar(500)  not null,
 comment_status enum('valid', 'banned') not null default 'valid');
 
 alter table comments add constraint fk_commenter_id foreign key (user_id, order_id) references orders(user_id, order_id);
+
+create or replace view admin as
+Select user_id as admin_id, login as admin_login
+From users where role = 'admin' or role='main_admin';
+
+create or replace view masters as
+Select user_id as master_id, login as master_login
+From users where role = 'master';

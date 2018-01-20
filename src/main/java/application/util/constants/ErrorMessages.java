@@ -35,4 +35,7 @@ public interface ErrorMessages {
 
     String WRONG_PASSWORD = "Wrong password!";
     String FAILED_ATTEMPT_CHANGE_PASSWORD = "Failed attempt to change password";
+
+    String FAILED_ATTEMPT_CHANGE_STATUS = "Failed attempt to change status";
+    String ALREADY_CHANGED = "This order's status has been already changed";
 }

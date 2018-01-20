@@ -12,6 +12,10 @@
     </head>
     <body>
         <jsp:include page="/jsp/header.jsp"/>
-        <centre><h2><fmt:message key="order.add.status.success" bundle="${locale}"/></h2></centre>
+        <div class="container">
+             <div class="row">
+                  <div class="col-xs-12 text-center">
+                       <h2><fmt:message key="order.add.status.success" bundle="${locale}"/></h2>
+        </div></div></div>
     </body>
 </html>

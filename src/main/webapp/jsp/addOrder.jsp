@@ -14,29 +14,31 @@
         <jsp:include page="/jsp/header.jsp"/>
         <c:if test="${!empty sessionScope.userID}">
             <div class="container">
-                <div class="col-xs-12 text-center">
+                <div align="center">
                     <h2><fmt:message key="order.add" bundle="${locale}"/></h2>
                     <form method="post" action="serviceCentre">
-                        <fieldset>
+                        <fieldset style="width:50%;">
     			            <legend><fmt:message key="order.info.title" bundle="${locale}"/></legend>
     			            <fmt:message key="order.info.product.type" bundle="${locale}"/><br>
-    			            <select name="productType">
+    			            <select name="productType" class="form-control">
                                 <option value="productType" disabled><fmt:message key="order.info.select.product.type" bundle="${locale}"/></option>
-                                <option value="tv"><fmt:message key="order.info.select.tv" bundle="${locale}"/></option>
-                                <option value="telephone"><fmt:message key="order.info.select.telephone" bundle="${locale}"/></option>
-                                <option value="laptop"><fmt:message key="order.info.select.laptop" bundle="${locale}"/></option>
-                                <option value="tablet"><fmt:message key="order.info.select.tablet" bundle="${locale}"/></option>
+                                <option value="TV"><fmt:message key="order.info.select.tv" bundle="${locale}"/></option>
+                                <option value="Telephone"><fmt:message key="order.info.select.telephone" bundle="${locale}"/></option>
+                                <option value="Laptop"><fmt:message key="order.info.select.laptop" bundle="${locale}"/></option>
+                                <option value="Tablet"><fmt:message key="order.info.select.tablet" bundle="${locale}"/></option>
                             </select>
     			            <br>
     			            <fmt:message key="order.info.product.name" bundle="${locale}"/><br>
-    			            <input type="text" name="productName" pattern="[A-ZА-яа-яa-z0-9 ]{2,40}" required>
+    			            <input type="text" name="productName" pattern="[A-ZА-яа-яa-z0-9 ]{2,40}" class="form-control" required>
     			            <br>
     			            <fmt:message key="order.info.problem" bundle="${locale}"/><br>
-                            <textarea name="problemDescription" rows="10" cols="45" required></textarea>
+                            <textarea name="problemDescription" rows="10" cols="45" class="form-control" required></textarea>
                             <br>
     			            <br>
     			            <input type="hidden" name="command" value="addOrder">
-    			            <button class="form-control btn btn-success" id="btnSubmit" type="submit"><fmt:message key="order.add" bundle="${locale}"/></button>
+    			            <div align="center">
+    			            <button class="btn btn-success" id="btnSubmit" type="submit"><fmt:message key="order.add" bundle="${locale}"/></button>
+    		                </div>
     		            </fieldset>
                     </form>
                 </div>

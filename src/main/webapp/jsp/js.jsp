@@ -1,7 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<!DOCTYPE html>
-<html>
     <head>
 <script src="/ServiceCentre/js/jquery-3.1.1.min.js"></script>
 <script src="/ServiceCentre/js/jquery.maskedinput.min.js"></script>
@@ -25,6 +23,3 @@
     });
 </script>
     </head>
-    <body>
-    </body>
-</html>

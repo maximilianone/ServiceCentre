@@ -49,7 +49,7 @@ public class ShowPersonalPageCommand implements Command {
     private void getOrdersInfo(int userID, HttpServletRequest request, HttpServletResponse response)
     throws IOException{
         List<FullOrder> orderList = orderService.getByUserId(userID);
-        request.getSession().setAttribute("orders",orderList);
+        request.getSession().setAttribute("userOrders",orderList);
         response.sendRedirect(request.getContextPath() + "/jsp/personalPage.jsp");
     }
 }
