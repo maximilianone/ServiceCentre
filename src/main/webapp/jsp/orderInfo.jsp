@@ -2,13 +2,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<fmt:setLocale value="${sessionScope.session_locale}"/>
+
 <fmt:setBundle basename="locale_info" var="locale"/>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title><fmt:message key="title.home" bundle="${locale}"/></title>
+        <title><fmt:message key="title.project.name" bundle="${locale}"/></title>
         <jsp:include page="/jsp/css.jsp"/>
+        <jsp:include page="/jsp/js.jsp"/>
     </head>
     <body>
         <jsp:include page="/jsp/header.jsp"/>
@@ -88,7 +91,7 @@
                         <input type="hidden" name="status" value="rejected">
                         <input type="hidden" name="command" value="processNewOrder">
                     </table>
-                    <br><button class="btn btn-success" id="btnSubmit" type="submit"><fmt:message key="order.reject" bundle="${locale}"/></button><BR><BR></center>
+                    <br><button class="btn btn-success" type="submit"><fmt:message key="order.reject" bundle="${locale}"/></button><BR><BR></center>
             </fieldset>
             </div>
             </form>
@@ -108,11 +111,63 @@
                         <input type="hidden" name="status" value="accepted">
                         <input type="hidden" name="command" value="processNewOrder">
                     </table>
-                    <br><button class="btn btn-success" id="btnSubmit" type="submit"><fmt:message key="order.accept" bundle="${locale}"/></button><BR><BR></center>
-            </fieldset>
-            </div>
+                    <br><button class="btn btn-success" type="submit"><fmt:message key="order.accept" bundle="${locale}"/></button><BR><BR></center>
+                </fieldset>
+                </div>
             </form>
+        </c:if>
+        <c:if test="${sessionScope.userID == requestScope.order.getManagerID() || sessionScope.role == 'MAIN'}">
+        <div align="center">
+            <table border="0">
+            <tr>
+            <c:if test="${requestScope.order.getStatus()!='NEW' && requestScope.order.getStatus()!='REJECTED' && requestScope.order.getStatus()!='CLOSED'}">
+            <td>
+                <form method="post" action="serviceCentre" >
+                    <input type="hidden" name="orderID" value="${requestScope.order.getOrderID()}"/>
+                    <input type="hidden" name="oldStatus" value="${requestScope.order.getStatus()}"/>
+                    <input type="hidden" name="command" value="changeOrderStatusAsAdmin">
+                    <input type="hidden" name="status" value="closed">
+                    <br><button id="confirmBtn" class="btn btn-success" type="submit"><fmt:message key="order.cancel" bundle="${locale}"/></button>
+                </form>
+            </td>
+            </c:if>
+            <c:if test="${requestScope.order.getStatus()=='AGREED'}">
+            <td>
+                <form method="post" action="serviceCentre" >
+                    <input type="hidden" name="orderID" value="${requestScope.order.getOrderID()}"/>
+                    <input type="hidden" name="oldStatus" value="${requestScope.order.getStatus()}"/>
+                    <input type="hidden" name="command" value="changeOrderStatusAsAdmin">
+                    <input type="hidden" name="status" value="waiting_for_master">
+                    <br><button id="confirmBtn" class="btn btn-success" type="submit"><fmt:message key="order.paid" bundle="${locale}"/></button>
+                </form>
+            </td>
+            </c:if>
+            <c:if test="${requestScope.order.getStatus()=='PERFORMED'}">
+            <td>
+                <form method="post" action="serviceCentre" >
+                    <input type="hidden" name="orderID" value="${requestScope.order.getOrderID()}"/>
+                    <input type="hidden" name="oldStatus" value="${requestScope.order.getStatus()}"/>
+                    <input type="hidden" name="command" value="changeOrderStatusAsAdmin">
+                    <input type="hidden" name="status" value="fulfilled">
+                    <br><button id="confirmBtn" class="btn btn-success" type="submit"><fmt:message key="order.fulfilled" bundle="${locale}"/></button>
+                </form>
+            </td>
+            </c:if>
 
+            <c:if test="${requestScope.order.getStatus()=='RESERVED_BY_MASTER'}">
+            <td>
+                <form method="post" action="serviceCentre" >
+                    <input type="hidden" name="orderID" value="${requestScope.order.getOrderID()}"/>
+                    <input type="hidden" name="oldStatus" value="${requestScope.order.getStatus()}"/>
+                    <input type="hidden" name="command" value="changeOrderStatusAsAdmin">
+                    <input type="hidden" name="status" value="performed">
+                    <br><button id="confirmBtn" class="btn btn-success" type="submit"><fmt:message key="order.performed" bundle="${locale}"/></button>
+                </form>
+            </td>
+            </c:if>
+            </tr>
+            </table>
+        </div>
         </c:if>
     </body>
 </html>

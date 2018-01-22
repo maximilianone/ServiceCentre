@@ -2,13 +2,17 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<fmt:setLocale value="${sessionScope.session_locale}"/>
+
 <fmt:setBundle basename="locale_info" var="locale"/>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title><fmt:message key="title.home" bundle="${locale}"/></title>
+        <title><fmt:message key="title.project.name" bundle="${locale}"/></title>
         <jsp:include page="/jsp/css.jsp"/>
+        <jsp:include page="/jsp/testJS.jsp"/>
+
     </head>
     <body>
         <jsp:include page="/jsp/header.jsp"/>
@@ -17,12 +21,12 @@
             <table border="0">
             <c:forEach items="${sessionScope.comments}" var="objectList">
                 <tr>
-                    <td><b>User login: &nbsp</b> <c:out value="${objectList.getLogin()}" /></td>
+                    <td><b><fmt:message key="comment.login" bundle="${locale}"/>&nbsp</b> <c:out value="${objectList.getLogin()}" /></td>
                 </tr>
                 <tr>
-                    <td><b>Comment: &nbsp</b> <c:out value="${objectList.getContent()}" /></td>
+                    <td><b><fmt:message key="comment.display" bundle="${locale}"/>&nbsp</b> <c:out value="${objectList.getContent()}" /></td>
                  </tr>
-                <c:if test="${sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN_ADMIN'}">
+                <c:if test="${sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN'}">
                     <tr>
                     <td>
                         <form method="post" action="serviceCentre">
@@ -47,7 +51,7 @@
                         <fmt:message key="comment.orderId" bundle="${locale}"/><br>
                         <input type="text" name="orderID" pattern="[0-9]{1,20}" class="form-control" required>
                         <br><fmt:message key="comment.content" bundle="${locale}"/><br>
-                        <textarea name="commentContent" rows="10" cols="45" class="form-control" required></textarea>
+                        <textarea name="commentContent" id="test" pattern="[a-zA-Zа-яА-Я0-9ІЇїі ]{1,100}" rows="10" cols="45" class="form-control" required></textarea>
                         <br>
                         <input type="hidden" name="command" value ="addComment">
                         <input type="hidden" name="userID" value = "${sessionScope.userID}" >

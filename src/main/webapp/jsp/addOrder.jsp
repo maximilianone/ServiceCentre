@@ -2,13 +2,16 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<fmt:setLocale value="${sessionScope.session_locale}"/>
+
 <fmt:setBundle basename="locale_info" var="locale"/>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title><fmt:message key="title.order.add" bundle="${locale}"/></title>
+        <title><fmt:message key="title.project.name" bundle="${locale}"/></title>
         <jsp:include page="/jsp/css.jsp"/>
+        <jsp:include page="/jsp/testJS.jsp"/>
     </head>
     <body>
         <jsp:include page="/jsp/header.jsp"/>
@@ -29,10 +32,10 @@
                             </select>
     			            <br>
     			            <fmt:message key="order.info.product.name" bundle="${locale}"/><br>
-    			            <input type="text" name="productName" pattern="[A-ZА-яа-яa-z0-9 ]{2,40}" class="form-control" required>
+    			            <input type="text" name="productName" pattern="[A-ZА-яа-яa-z0-9ІЇії ]{2,40}" class="form-control" required>
     			            <br>
     			            <fmt:message key="order.info.problem" bundle="${locale}"/><br>
-                            <textarea name="problemDescription" rows="10" cols="45" class="form-control" required></textarea>
+                            <textarea name="problemDescription" id="test" pattern="[a-zA-Zа-яА-Я0-9ІЇїі ]{1,100}" rows="10" cols="45" class="form-control" required></textarea>
                             <br>
     			            <br>
     			            <input type="hidden" name="command" value="addOrder">

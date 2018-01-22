@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-    <head>
+
+<head>
 <script src="/ServiceCentre/js/jquery-3.1.1.min.js"></script>
 <script src="/ServiceCentre/js/jquery.maskedinput.min.js"></script>
 <script src="/ServiceCentre/js/jquery.validate.js"></script>
@@ -22,4 +23,16 @@
         });
     });
 </script>
-    </head>
+<script type="text/javascript">
+    $(function () {
+         $("#confirmBtn").click(function () {
+             var r = confirm("Are you sure?");
+             if (r == true) {
+                 return true;
+             } else {
+                 return false;
+             }
+         });
+    });
+</script>
+</head>

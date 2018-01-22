@@ -2,12 +2,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<fmt:setLocale value="${sessionScope.session_locale}"/>
+
 <fmt:setBundle basename="locale_info" var="locale"/>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title><fmt:message key="title.home" bundle="${locale}"/></title>
+        <title><fmt:message key="title.project.name" bundle="${locale}"/></title>
         <jsp:include page="/jsp/css.jsp"/>
         <jsp:include page="/jsp/js.jsp"/>
     </head>
@@ -26,11 +28,11 @@
                     <table>
                         <tr>
                             <label><td align="right"><fmt:message key="registration.firstname" bundle="${locale}"/></td>
-                             <td><input type="text" id="current_user" name="firstName" pattern="[A-Za-z][A-Za-z ]{2,20}" value="${sessionScope.firstName}" class="form-control" required></td> </label>
+                             <td><input type="text" id="current_user" name="firstName" pattern="[A-Za-zА-Яа-яІЇії]{2,20}" value="${sessionScope.firstName}" class="form-control" required></td> </label>
                         </tr>
                         <tr>
                             <label><td align="right"><fmt:message key="registration.lastname" bundle="${locale}"/></td>
-                            <td><input type="text" id="current_user" name="lastName" pattern="[A-Za-z][A-Za-z ]{2,20}" value="${sessionScope.lastName}" class="form-control" required></td> </label>
+                            <td><input type="text" id="current_user" name="lastName" pattern="[A-Za-zА-Яа-яІЇії]{2,20}" value="${sessionScope.lastName}" class="form-control" required></td> </label>
                             </tr>
                         <tr>
                             <label><td align="right"><fmt:message key="registration.phone" bundle="${locale}"/></td>
@@ -104,6 +106,7 @@
                         <c:if test="${objectList.getStatus()=='ACCEPTED'}">
                             <td><form method="post" action="serviceCentre">
                                 <input type="hidden" name="orderID" value="${objectList.getOrderID()}"/>
+                                <input type="hidden" name="oldStatus" value="${objectList.getStatus()}"/>
                                 <input type="hidden" name="command" value="changeOrderStatus"/>
                                 <input type="hidden" name="status" value="agreed"/>
                                 <input type="hidden" name="userID" value="${sessionScope.userID}"/>
@@ -111,6 +114,7 @@
                                 <fmt:message key="user.page.agree" bundle="${locale}"/></button></form></td>
                             <td><form method="post" action="serviceCentre">
                                 <input type="hidden" name="orderID" value="${objectList.getOrderID()}"/>
+                                <input type="hidden" name="oldStatus" value="${objectList.getStatus()}"/>
                                 <input type="hidden" name="command" value="changeOrderStatus"/>
                                 <input type="hidden" name="status" value="closed"/>
                                  <input type="hidden" name="userID" value="${sessionScope.userID}"/>

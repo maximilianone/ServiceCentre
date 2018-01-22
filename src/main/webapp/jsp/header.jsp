@@ -3,6 +3,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<fmt:setLocale value="${sessionScope.session_locale}"/>
+
 <fmt:setBundle basename="locale_info" var="locale"/>
 
     <head>
@@ -50,11 +52,11 @@
              </ul>
              <ul class="nav navbar-nav navbar-right">
 
-                    <c:if test="${sessionScope.role =='ADMIN' || sessionScope.role =='MAIN_ADMIN'}">
+                    <c:if test="${sessionScope.role =='ADMIN' || sessionScope.role =='MAIN'}">
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><fmt:message key="admin.options" bundle="${locale}"/></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href=""><fmt:message key="admin.show.all.users" bundle="${locale}"/></a></li>
+                                <li><a href="serviceCentre?command=showAllUsers"><fmt:message key="admin.show.all.users" bundle="${locale}"/></a></li>
                         	    <li><a href="serviceCentre?command=showAllOrders&admin=false"><fmt:message key="admin.show.all.orders" bundle="${locale}"/></a></li>
                         	    <li><a href="serviceCentre?command=showAllOrders&admin=true"><fmt:message key="admin.show.administrated.orders" bundle="${locale}"/></a></li>
                             </ul>
@@ -65,17 +67,28 @@
                         <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><fmt:message key="master.options" bundle="${locale}"/></span></a>
                             <ul class="dropdown-menu" role="menu">
-                                <li><a href="#"><fmt:message key="master.show.all.orders" bundle="${locale}"/></a></li>
-                        	    <li><a href="#"><fmt:message key="master.show.executed.orders" bundle="${locale}"/></a></li>
+                                <li><a href="serviceCentre?command=showMasterOrders&master=all"><fmt:message key="master.show.all.orders" bundle="${locale}"/></a></li>
+                        	    <li><a href="serviceCentre?command=showMasterOrders&master=current"><fmt:message key="master.show.executed.orders" bundle="${locale}"/></a></li>
                             </ul>
                         </li>
                     </c:if>
 
                   <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><span id="lanNavSel">UKR</span> <span class="caret"></span></a>
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+                    <c:if test="${sessionScope.session_locale == 'en_US' || empty sessionScope.session_locale}">
+                        ENG
+                    </c:if>
+                    <c:if test="${sessionScope.session_locale == 'uk_UA'}">
+                        UKR
+                    </c:if>
+                  </a>
                         <ul class="dropdown-menu" role="menu">
-                            <li><a id="navUkr" href="#" class="language"> <img id="imgNavUkr" src="/ServiceCentre/image/ukr.png" height="15" width = "20">  <span id="lanNavUkr">Українська</span></a></li>
-                        	<li><a id="navEng" href="#" class="language"><img id="imgNavEng" src="/ServiceCentre/image/eng.png" height="15" width = "20">  <span id="lanNavEng">English</span></a></li>
+                            <li><a id="navUkr" href="serviceCentre?command=changeLocale&session_locale=uk_UA" class="language">
+                                <img id="imgNavUkr" src="/ServiceCentre/image/ukr.png" height="15" width = "20">  
+                                <span id="lanNavUkr">Українська</span></a></li>
+                        	<li><a id="navEng" href="serviceCentre?command=changeLocale&session_locale=en_US" class="language">
+                        	    <img id="imgNavEng" src="/ServiceCentre/image/eng.png" height="15" width = "20">  
+                        	<span id="lanNavEng">English</span></a></li>
                         </ul>
                   </li>
 
@@ -97,7 +110,8 @@
                         <li><a href="/ServiceCentre/jsp/register.jsp"><fmt:message key="user.register" bundle="${locale}"/></a></li>
                     </c:if>
                    <li class="dropdown">
-                     <a href="http://phpoll.com/login" class="dropdown-toggle" data-toggle="dropdown">Log In <span class="caret"></span></a>
+                     <a href="http://phpoll.com/login" class="dropdown-toggle" data-toggle="dropdown">
+                        <fmt:message key="user.login" bundle="${locale}"/><span class="caret"></span></a>
                      <ul class="dropdown-menu dropdown-lr" role="menu">
                        <div class="col-lg-12">
                          <div class="text-center">
@@ -119,7 +133,7 @@
 
                            <div class="form-group">
                              <div class="row">
-                               <div class="col-xs-5 pull-right">
+                               <div class="col-xs-6 pull-right">
                                 <fmt:message key="user.login" bundle="${locale}" var="submitLocale"/>
                                  <input type="submit" name="login-submit" id="login-submit" tabindex="4" class="form-control btn btn-success" value="${submitLocale}">
                                </div>

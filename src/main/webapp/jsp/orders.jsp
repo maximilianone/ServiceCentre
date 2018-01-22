@@ -2,17 +2,20 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<fmt:setLocale value="${sessionScope.session_locale}"/>
+
 <fmt:setBundle basename="locale_info" var="locale"/>
 
 <!DOCTYPE html>
 <html>
     <head>
-        <title><fmt:message key="title.home" bundle="${locale}"/></title>
+        <title><fmt:message key="title.project.name" bundle="${locale}"/></title>
         <jsp:include page="/jsp/css.jsp"/>
     </head>
     <body>
         <jsp:include page="/jsp/header.jsp"/>
         <c:if test="${not empty sessionScope.userID}">
+        <c:if test = "${sessionScope.role == 'ADMIN' || sessionScope.role == 'MAIN'}">
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 text-center">
@@ -28,7 +31,7 @@
            </select>
             <div class="input-group add-on">
               <fmt:message key="search" bundle="${locale}" var="search"/>
-              <input class="form-control" placeholder="${search}" name="searchVar" type="text">
+              <input class="form-control" placeholder="${search}" name="searchVar" type="text" pattern="[A-Za-z0-9 ]{1,30}">
               <input type="hidden" name="command" value="searchOrders">
               <div class="input-group-btn">
                 <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
@@ -78,6 +81,7 @@
                     </center>
                 <br><br>
             </div>
+          </c:if>
           </c:if>
           </c:if>
     </body>
