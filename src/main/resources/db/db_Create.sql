@@ -17,7 +17,7 @@ login varchar(50) not null,
 user_password varchar(50) not null,
 email varchar(50) not null,
 phone varchar(50) not null,
-role enum('client','admin','main_admin', 'master') not null default 'client'
+role enum('client','admin','main', 'master') not null default 'client'
 );
 
 ALTER TABLE users ADD CONSTRAINT users_login UNIQUE (login);
@@ -42,13 +42,13 @@ order_status enum('new',
 'rejected',
 'agreed',
 'waiting_for_master',
+'reserved_by_master',
 'performed',
 'fulfilled',
 'closed') not null default 'new');
 
 
 alter table orders add constraint fk_user_id foreign key (user_id) references users(user_id);
-alter table orders add constraint fk_master_id foreign key (master_id) references users(user_id);
 alter table orders add constraint fk_manager_id foreign key (manager_id) references users(user_id);
 alter table orders add constraint fk_product_id foreign key (product_id) references product(product_id);
 
