@@ -2,6 +2,7 @@ package application.controller.servlet;
 
 import application.controller.command.CommandFactory;
 import application.controller.validation.AccessValidator;
+import application.model.exception.ModelException;
 import application.util.constants.ErrorMessages;
 
 import javax.servlet.ServletException;
@@ -23,10 +24,15 @@ public class ServiceCentreServlet extends HttpServlet implements ErrorMessages {
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String command = request.getParameter("command");
-        if (AccessValidator.getInstance().checkAccess(request, command)) {
-            CommandFactory.getInstance().getCommand(command).execute(request, response);
-        } else {
-            response.sendRedirect(request.getContextPath() + ERROR_PAGE);
+        try {
+            if (AccessValidator.getInstance().checkAccess(request, command)) {
+                CommandFactory.getInstance().getCommand(command).execute(request, response);
+            } else {
+                response.sendRedirect(request.getContextPath() + ERROR_PAGE);
+            }
+        } catch (ModelException e) {
+            request.setAttribute("error", e.getMessage());
+            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         }
     }
 }
