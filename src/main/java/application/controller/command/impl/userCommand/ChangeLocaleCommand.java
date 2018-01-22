@@ -18,8 +18,6 @@ public class ChangeLocaleCommand implements Command {
         HttpSession session = request.getSession(true);
         session.setAttribute(LOCALE, locale);
 
-        System.out.println(LOCALE + locale);
-
         response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 }
