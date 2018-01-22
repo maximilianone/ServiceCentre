@@ -10,7 +10,7 @@ public class User {
     private String password;
     private Role role;
 
-    private enum Role {CLIENT, ADMIN, MAIN_ADMIN, MASTER}
+    public enum Role {GUEST, CLIENT, ADMIN, MAIN, MASTER}
 
     public User(Builder builder) {
         this.id = builder.id;

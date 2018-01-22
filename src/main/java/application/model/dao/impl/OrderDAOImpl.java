@@ -30,7 +30,7 @@ public class OrderDAOImpl implements OrderDAO {
             "INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
             "INNER JOIN USERS ON USERS.user_id=orders.user_id " +
             "Left JOIN admin on orders.manager_id = admin.admin_id " +
-            "Left Join masters on orders.master_id = masters.master_id "+
+            "Left Join masters on orders.master_id = masters.master_id " +
             "where order_id = ? and order_status = ?";
 
     private Mapper<FullOrder, ResultSet> mapper;
@@ -81,7 +81,6 @@ public class OrderDAOImpl implements OrderDAO {
             return orderList;
         } catch (ModelException e) {
             logger.error(ORDER_SELECT_ERROR);
-            e.printStackTrace();
             throw new ModelException(ORDER_SELECT_ERROR);
         }
     }
@@ -97,7 +96,22 @@ public class OrderDAOImpl implements OrderDAO {
             return orderList;
         } catch (ModelException e) {
             logger.error(ORDER_SELECT_ERROR);
-            e.printStackTrace();
+            throw new ModelException(ORDER_SELECT_ERROR);
+        }
+    }
+
+    @Override
+    public List<FullOrder> getGroupByStatus(Object param, String name, String status) {
+        String query = createSelectQueryWithStatus(name);
+        Map<Integer, Object> parameterMap = new HashMap<>();
+        parameterMap.put(1, status);
+        parameterMap.put(2, param);
+        try {
+            List<FullOrder> orderList = DAOTemplate.selectGroup(mapper, query, parameterMap);
+            logger.info("All found master orders were shown");
+            return orderList;
+        } catch (ModelException e) {
+            logger.error(ORDER_SELECT_ERROR);
             throw new ModelException(ORDER_SELECT_ERROR);
         }
     }
@@ -107,27 +121,47 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     private String createSelectQuery(String fieldName) {
-        String query =  "Select * from Orders INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
+        String query = "Select * from Orders INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
                 "INNER JOIN USERS ON USERS.user_id=orders.user_id " +
                 "Left JOIN admin on orders.manager_id = admin.admin_id " +
                 "Left Join masters on orders.master_id = masters.master_id ";
-        if(fieldName.equals(DB_LOGIN)){
-            query+="WHERE " + fieldName + " = ?";
-        }else {
-            query+="WHERE orders." + fieldName + " = ?";
+        if (fieldName.equals(DB_LOGIN)) {
+            query += "WHERE " + fieldName + " = ?";
+        } else {
+            query += "WHERE orders." + fieldName + " = ?";
+        }
+        return query;
+    }
+
+    private String createSelectQueryWithStatus(String fieldName) {
+        String query = "Select * from Orders INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
+                "INNER JOIN USERS ON USERS.user_id=orders.user_id " +
+                "Left JOIN admin on orders.manager_id = admin.admin_id " +
+                "Left Join masters on orders.master_id = masters.master_id " +
+                "Where orders.order_status=? ";
+        switch (fieldName) {
+            case DB_LOGIN:
+                query += "and " + fieldName + " = ?";
+                break;
+            case DB_PRODUCT_TYPE:
+                query += "and products." + fieldName + " = ?";
+                break;
+            default:
+                query += "and orders." + fieldName + " = ?";
+                break;
         }
         return query;
     }
 
     @Override
-    public boolean checkStatus(int orderID, String status){
+    public boolean checkStatus(int orderID, String status) {
         try {
             Map<Integer, Object> parameterMap = new HashMap<>();
             parameterMap.put(1, orderID);
             parameterMap.put(2, status);
             FullOrder order = DAOTemplate.selectOne(CHECK_STATUS, parameterMap, mapper);
             logger.info("status of order " + orderID + " has been changed");
-            return (order!=null);
+            return (order != null);
         } catch (ModelException e) {
             logger.info(FAILED_ATTEMPT_CHANGE_STATUS);
             throw new ModelException(ALREADY_CHANGED);

@@ -4,6 +4,7 @@ import application.controller.command.Command;
 import application.controller.service.abstraction.OrderService;
 import application.model.dto.FullOrder;
 import application.model.exception.ModelException;
+import application.util.constants.DBParameters;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,10 +13,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SearchOrdersCommand implements Command {
+public class SearchMasterOrdersCommand implements Command, DBParameters {
     private OrderService orderService;
 
-    public SearchOrdersCommand(OrderService orderService) {
+    public SearchMasterOrdersCommand(OrderService orderService) {
         this.orderService = orderService;
     }
 
@@ -27,11 +28,11 @@ public class SearchOrdersCommand implements Command {
             String name = request.getParameter(SEARCH_PARAMETER);
 
             List<FullOrder> orderList;
-            if (request.getSession().getAttribute(AS_ADMIN).equals("true")) {
-                int adminID =(Integer) request.getSession().getAttribute(USER_ID);
-                orderList = getOrdersForAdmin(adminID, param, name);
+            if (request.getSession().getAttribute(MASTER).equals("current")) {
+                int masterID = (Integer) request.getSession().getAttribute(USER_ID);
+                orderList = getOrdersForMaster(masterID, param, name, PERFORMED, RESERVED_BY_MASTER);
             } else {
-                orderList = getOrders(param, name);
+                orderList = getOrders(param, name, WAITING_FOR_MASTER);
             }
 
             sendRedirect(orderList, request, response);
@@ -41,14 +42,15 @@ public class SearchOrdersCommand implements Command {
         }
     }
 
-    private List<FullOrder> getOrders(Object param, String name){
-        return orderService.getBy(param, name);
+    private List<FullOrder> getOrders(Object param, String name, String status) {
+        return orderService.getByStatus(param, name, status);
     }
 
-    private List<FullOrder> getOrdersForAdmin(int adminID, Object param, String name){
+    private List<FullOrder> getOrdersForMaster(int masterID, Object param, String name, String... statuses) {
         List<FullOrder> orderList = new ArrayList<>();
-        for (FullOrder order: orderService.getBy(param, name)){
-            if(order.getManagerID()==adminID){
+
+        for (FullOrder order : orderService.getByStatus(param, name, statuses)) {
+            if (order.getMasterID() == masterID) {
                 orderList.add(order);
             }
         }
@@ -57,7 +59,7 @@ public class SearchOrdersCommand implements Command {
 
     private void sendRedirect(List<FullOrder> orderList, HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        request.getSession().setAttribute("ordersFound",orderList);
-        response.sendRedirect(request.getContextPath() + "/jsp/orders.jsp");
+        request.getSession().setAttribute("ordersFound", orderList);
+        response.sendRedirect(request.getContextPath() + "/jsp/masterOrders.jsp");
     }
 }

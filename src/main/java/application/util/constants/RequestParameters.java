@@ -31,6 +31,24 @@ public interface RequestParameters {
 
     String ACCEPTED = "accepted";
     String REJECTED = "rejected";
+    String WAITING_FOR_MASTER = "waiting_for_master";
+    String RESERVED_BY_MASTER = "reserved_by_master";
+    String PERFORMED = "performed";
 
-    String FOR_ADMIN = "admin";
+    String AS_ADMIN = "admin";
+    String AS_CUSTOMER = "customer";
+
+    String USER_FOR_STATUS_CHANGE = "user";
+
+    String OLD_ORDER_STATUS = "oldStatus";
+    String ORDER_STATUS_NEW = "new";
+
+    String OLD_USER_ROLE = "oldRole";
+    String NEW_USER_ROLE = "newRole";
+    String UPDATED_USER_ID = "updatedUserID";
+
+    String MASTER = "master";
+
+    String LOCALE = "session_locale";
+
 }

@@ -2,6 +2,7 @@ package application.controller.command.impl.orderCommand;
 
 import application.controller.command.Command;
 import application.controller.service.abstraction.OrderService;
+import application.controller.validation.OrderStatusChangeValidator;
 import application.model.dto.FullOrder;
 import application.model.exception.ModelException;
 import application.util.constants.DBParameters;
@@ -24,24 +25,31 @@ public class ChangeOrderStatusCommand implements Command, DBParameters {
             throws ServletException, SecurityException, IOException {
         try {
             int orderID = Integer.parseInt(request.getParameter(ORDER_ID));
-            int userID = Integer.parseInt(request.getParameter(USER_ID));
             String status = request.getParameter(ORDER_STATUS);
-            changeStatus(orderID, status);
-            getOrdersInfo(userID, request, response);
+            String oldStatus = request.getParameter(OLD_ORDER_STATUS);
+
+            OrderStatusChangeValidator.validateStatusChange(oldStatus, status);
+
+            changeStatus(orderID, status, oldStatus);
+
+            int userID = Integer.parseInt(request.getParameter(USER_ID));
+            getUsersOrdersInfo(userID, request, response);
+
         } catch (ModelException e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request,response);
+            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         }
     }
 
-    private void changeStatus(int orderID, String status){
-        orderService.update(orderID, status, DB_ORDER_STATUS);
+    private void changeStatus(int orderID, String status, String oldStatus) {
+        orderService.changeStatus(orderID, status, oldStatus);
     }
 
-    private void getOrdersInfo(int userID, HttpServletRequest request, HttpServletResponse response)
-            throws IOException{
+    private void getUsersOrdersInfo(int userID, HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         List<FullOrder> orderList = orderService.getByUserId(userID);
-        request.getSession().setAttribute("userOrders",orderList);
+
+        request.getSession().setAttribute("userOrders", orderList);
         response.sendRedirect(request.getContextPath() + "/jsp/personalPage.jsp");
     }
 }

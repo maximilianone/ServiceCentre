@@ -15,12 +15,13 @@ public class Order {
     private LocalDate dateOfPlacement;
     private Status status;
 
-    private enum Status {
+    public enum Status {
         NEW,
         ACCEPTED,
         REJECTED,
         AGREED,
         WAITING_FOR_MASTER,
+        RESERVED_BY_MASTER,
         PERFORMED,
         FULFILLED,
         CLOSED

@@ -8,11 +8,11 @@ public interface DBParameters {
     String DB_PASSWORD = "user_password";
     String EMAIL = "email";
     String DB_PHONE = "phone";
-    String ROLE = "role";
+    String DB_ROLE = "role";
 
     String PRODUCT_ID = "product_id";
     String PRODUCT_NAME = "product_name";
-    String PRODUCT_TYPE = "product_type";
+    String DB_PRODUCT_TYPE = "product_type";
 
     String DB_ORDER_ID = "order_id";
     String DB_MASTER_ID = "master_id";

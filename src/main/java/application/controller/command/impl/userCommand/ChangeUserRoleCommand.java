@@ -9,11 +9,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
-public class ChangePasswordCommand implements Command {
+public class ChangeUserRoleCommand implements Command {
     private UserService userService;
 
-    public ChangePasswordCommand(UserService userService) {
+    public ChangeUserRoleCommand(UserService userService) {
         this.userService = userService;
     }
 
@@ -21,7 +22,13 @@ public class ChangePasswordCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
         try {
-            changePassword(request, response);
+            int userID = Integer.parseInt(request.getParameter(UPDATED_USER_ID));
+            String oldRole = request.getParameter(OLD_USER_ROLE);
+            String newRole = request.getParameter(NEW_USER_ROLE);
+
+            changeRole(userID, oldRole, newRole);
+
+            showUsers(request, response);
         } catch (ModelException e) {
             request.setAttribute("error", e.getMessage());
             System.out.println(e.getMessage());
@@ -29,14 +36,15 @@ public class ChangePasswordCommand implements Command {
         }
     }
 
-    private void changePassword(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, ModelException {
-        String password = request.getParameter(USER_PASSWORD);
-        String oldPassword = request.getParameter(USER_OLD_PASSWORD);
-        int userID = Integer.parseInt(request.getParameter(USER_ID));
+    private void changeRole(int userID, String oldRole, String newRole) {
+        userService.changeRole(userID, newRole, oldRole);
+    }
 
-        userService.changePassword(userID, oldPassword, password);
+    private void showUsers(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        List<User> userList = userService.getAll();
 
-        response.sendRedirect(request.getContextPath() + "/jsp/personalPage.jsp");
+        request.getSession().setAttribute("usersFound", userList);
+        response.sendRedirect(request.getContextPath() + "/jsp/usersInfo.jsp");
     }
 }

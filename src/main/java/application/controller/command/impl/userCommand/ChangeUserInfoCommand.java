@@ -27,6 +27,7 @@ public class ChangeUserInfoCommand implements Command {
                     .setLastName(request.getParameter(USER_LAST_NAME))
                     .setPhone(request.getParameter(USER_PHONE))
                     .build();
+
             changeInfo(user, request, response);
         } catch (ModelException e) {
             request.setAttribute("error", e.getMessage());
@@ -38,9 +39,11 @@ public class ChangeUserInfoCommand implements Command {
     private void changeInfo(User user, HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, ModelException {
         userService.changeInfo(user);
+
         request.getSession().setAttribute(USER_FIRST_NAME, user.getFirstName());
         request.getSession().setAttribute(USER_LAST_NAME, user.getLastName());
         request.getSession().setAttribute(USER_PHONE, user.getPhone());
+
         response.sendRedirect(request.getContextPath() + "/jsp/personalPage.jsp");
     }
 }

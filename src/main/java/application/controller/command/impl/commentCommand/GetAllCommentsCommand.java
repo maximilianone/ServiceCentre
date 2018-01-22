@@ -32,6 +32,7 @@ public class GetAllCommentsCommand implements Command {
     private void showComments(HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException, ModelException {
         List<FullComment> commentList = commentService.getAll();
+
         request.getSession().setAttribute("comments", commentList);
         response.sendRedirect(request.getContextPath() + "/jsp/comment.jsp");
     }

@@ -18,23 +18,23 @@ public class AddUserCommand implements Command {
     private UserService userService;
     private Mapper<User, HttpServletRequest> userRequestMapper;
 
-    public AddUserCommand(UserService userService, UserRequestMapper userRequestMapper)
-    {
+    public AddUserCommand(UserService userService, UserRequestMapper userRequestMapper) {
         this.userService = userService;
         this.userRequestMapper = userRequestMapper;
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException
-    {
+            throws ServletException, SecurityException, IOException {
         User user = userRequestMapper.map(request);
+
         try {
             user.setId(addUser(user));
+
             authorizeUser(user, request, response);
         } catch (ModelException e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request,response);
+            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         }
     }
 
@@ -49,6 +49,7 @@ public class AddUserCommand implements Command {
         session.setAttribute(USER_LOGIN, user.getLogin());
         session.setAttribute(USER_ID, user.getId());
         session.setAttribute(USER_ROLE, user.getRole());
+
         response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 }

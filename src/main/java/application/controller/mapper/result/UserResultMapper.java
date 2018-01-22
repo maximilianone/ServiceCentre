@@ -21,7 +21,7 @@ public class UserResultMapper implements Mapper<User, ResultSet>, DBParameters {
                     .setPassword(resultSet.getString(DB_PASSWORD))
                     .setEmail(resultSet.getString(EMAIL))
                     .setPhone(resultSet.getString(DB_PHONE))
-                    .setRole(resultSet.getString(ROLE))
+                    .setRole(resultSet.getString(DB_ROLE))
                     .build();
         } catch (SQLException e) {
             throw new ModelException(e);

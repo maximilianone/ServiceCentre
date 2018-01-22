@@ -33,17 +33,19 @@ public class AddOrderCommand implements Command {
             throws ServletException, SecurityException, IOException {
         Product product = productRequestMapper.map(request);
         Order order = orderRequestMapper.map(request);
+
         try {
             addOrder(request, response, product, order);
         } catch (ModelException e) {
             request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request,response);
+            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         }
     }
 
     private void addOrder(HttpServletRequest request, HttpServletResponse response, Product product, Order order)
             throws IOException, ServletException, ModelException {
         orderService.add(product, order);
+
         response.sendRedirect(request.getContextPath() + "/jsp/successOrderCreation.jsp");
     }
 }

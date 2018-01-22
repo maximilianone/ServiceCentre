@@ -4,9 +4,7 @@ import application.controller.mapper.Mapper;
 import application.model.dao.connection.abstraction.DBConnection;
 import application.model.dao.transaction.TransactionManager;
 import application.model.exception.ModelException;
-import application.util.constants.DBParameters;
 
-import java.io.UncheckedIOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 class DAOTemplate {
-    private static void prepareStatement(Map<Integer, Object> parameterMap, PreparedStatement preparedStatement)
+    private static void setSQLParameters(Map<Integer, Object> parameterMap, PreparedStatement preparedStatement)
             throws SQLException {
         for (Integer i : parameterMap.keySet()) {
             preparedStatement.setObject(i, parameterMap.get(i));
@@ -29,7 +27,7 @@ class DAOTemplate {
         DBConnection connection = TransactionManager.getConnection();
         try (
                 PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
-            prepareStatement(parameterMap, preparedStatement);
+            setSQLParameters(parameterMap, preparedStatement);
 
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
@@ -51,7 +49,7 @@ class DAOTemplate {
         List<T> result = new ArrayList<>();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            prepareStatement(parameterMap, preparedStatement);
+            setSQLParameters(parameterMap, preparedStatement);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.getResultSet();
 
@@ -75,7 +73,7 @@ class DAOTemplate {
         parameterMap.put(2, id);
         DBConnection connection = TransactionManager.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            prepareStatement(parameterMap, preparedStatement);
+            setSQLParameters(parameterMap, preparedStatement);
             int updateCount = preparedStatement.executeUpdate();
             return (updateCount > 0);
         } catch (SQLException e) {
@@ -86,7 +84,7 @@ class DAOTemplate {
     static <T> T selectOne(String query, Map<Integer, Object> parameterMap, Mapper<T, ResultSet> mapper){
         DBConnection connection = TransactionManager.getConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            prepareStatement(parameterMap, preparedStatement);
+            setSQLParameters(parameterMap, preparedStatement);
             preparedStatement.executeQuery();
             ResultSet resultSet = preparedStatement.getResultSet();
             if (resultSet != null) {

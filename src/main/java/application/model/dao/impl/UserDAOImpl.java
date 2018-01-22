@@ -27,6 +27,8 @@ public class UserDAOImpl implements UserDAO {
 
     private static final String CHECK_PASSWORD = "Select * From users where user_id=? and user_password = ?";
 
+    private static final String CHECK_ROLE = "Select * From users where user_id=? and role = ?";
+
     private Mapper<User, ResultSet> mapper;
 
     public UserDAOImpl(Mapper<User, ResultSet> mapper) {
@@ -69,6 +71,21 @@ public class UserDAOImpl implements UserDAO {
         } catch (ModelException e) {
             logger.error(USER_SELECT_ERROR);
             throw new ModelException(USER_SELECT_ERROR);
+        }
+    }
+
+    @Override
+    public List<User> getGroupBy(Object param, String name) {
+        String query = createSelectQuery(name);
+        Map<Integer, Object> parameterMap = new HashMap<>();
+        parameterMap.put(1, param);
+        try {
+            List<User> orderList = DAOTemplate.selectGroup(mapper, query, parameterMap);
+            logger.info("All found users were shown");
+            return orderList;
+        } catch (ModelException e) {
+            logger.error(ORDER_SELECT_ERROR);
+            throw new ModelException(ORDER_SELECT_ERROR);
         }
     }
 
@@ -118,17 +135,36 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean checkPassword(int userID, String password){
+    public boolean checkPassword(int userID, String password) {
         try {
             Map<Integer, Object> parameterMap = new HashMap<>();
             parameterMap.put(1, userID);
             parameterMap.put(2, password);
             User user = DAOTemplate.selectOne(CHECK_PASSWORD, parameterMap, mapper);
             logger.info("user " + userID + " is changing password");
-            return (user!=null);
+            return (user != null);
         } catch (ModelException e) {
             logger.info(FAILED_ATTEMPT_CHANGE_PASSWORD);
             throw new ModelException(WRONG_PASSWORD);
         }
+    }
+
+    @Override
+    public boolean checkRole(int userID, String role) {
+        try {
+            Map<Integer, Object> parameterMap = new HashMap<>();
+            parameterMap.put(1, userID);
+            parameterMap.put(2, role);
+            User user = DAOTemplate.selectOne(CHECK_ROLE, parameterMap, mapper);
+            logger.info("user " + userID + " role has been changed");
+            return (user != null);
+        } catch (ModelException e) {
+            logger.info(FAILED_ATTEMPT_CHANGE_ROLE);
+            throw new ModelException(ALREADY_OTHER_ROLE);
+        }
+    }
+
+    private String createSelectQuery(String fieldName) {
+        return "Select * from Users WHERE " + fieldName + " = ?";
     }
 }

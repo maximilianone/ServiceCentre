@@ -17,29 +17,30 @@ public class ShowPersonalPageCommand implements Command {
     private UserService userService;
     private OrderService orderService;
 
-    public ShowPersonalPageCommand(UserService userService, OrderService orderService)
-    {
+    public ShowPersonalPageCommand(UserService userService, OrderService orderService) {
         this.userService = userService;
-        this.orderService=orderService;
+        this.orderService = orderService;
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException
-    {
+            throws ServletException, SecurityException, IOException {
         try {
             int userID = (Integer) request.getSession().getAttribute(USER_ID);
-            getUserInfo(userID, request, response);
+
+            getUserInfo(userID, request);
+
             getOrdersInfo(userID, request, response);
         } catch (ModelException e) {
             request.setAttribute("error", e.getMessage());
             System.out.println(e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request,response);
+            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         }
     }
 
-    private void getUserInfo(int userID, HttpServletRequest request, HttpServletResponse response){
+    private void getUserInfo(int userID, HttpServletRequest request) {
         User userInfo = userService.getById(userID);
+
         request.getSession().setAttribute("firstName", userInfo.getFirstName());
         request.getSession().setAttribute("lastName", userInfo.getLastName());
         request.getSession().setAttribute("phone", userInfo.getPhone());
@@ -47,9 +48,10 @@ public class ShowPersonalPageCommand implements Command {
     }
 
     private void getOrdersInfo(int userID, HttpServletRequest request, HttpServletResponse response)
-    throws IOException{
+            throws IOException {
         List<FullOrder> orderList = orderService.getByUserId(userID);
-        request.getSession().setAttribute("userOrders",orderList);
+
+        request.getSession().setAttribute("userOrders", orderList);
         response.sendRedirect(request.getContextPath() + "/jsp/personalPage.jsp");
     }
 }

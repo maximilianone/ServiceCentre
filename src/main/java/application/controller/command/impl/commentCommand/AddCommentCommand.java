@@ -29,7 +29,8 @@ public class AddCommentCommand implements Command {
             throws ServletException, SecurityException, IOException {
         Comment comment = commentRequestMapper.map(request);
         try {
-            addComment(comment, request, response);
+            addComment(comment);
+
             showComments(request, response);
         } catch (ModelException e) {
             request.setAttribute("error", e.getMessage());
@@ -37,7 +38,7 @@ public class AddCommentCommand implements Command {
         }
     }
 
-    private void addComment(Comment comment, HttpServletRequest request, HttpServletResponse response)
+    private void addComment(Comment comment)
             throws IOException, ServletException, ModelException {
         commentService.add(comment);
     }

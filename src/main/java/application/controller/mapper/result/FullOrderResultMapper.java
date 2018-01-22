@@ -30,7 +30,7 @@ public class FullOrderResultMapper implements Mapper<FullOrder, ResultSet>, DBPa
             Product product = new Product.Builder()
                     .setId(resultSet.getInt(PRODUCT_ID))
                     .setProductName(resultSet.getString(PRODUCT_NAME))
-                    .setProductType(resultSet.getString(PRODUCT_TYPE))
+                    .setProductType(resultSet.getString(DB_PRODUCT_TYPE))
                     .build();
 
             String login = resultSet.getString(DB_LOGIN);

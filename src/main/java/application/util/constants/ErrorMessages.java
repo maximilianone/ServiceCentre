@@ -36,6 +36,12 @@ public interface ErrorMessages {
     String WRONG_PASSWORD = "Wrong password!";
     String FAILED_ATTEMPT_CHANGE_PASSWORD = "Failed attempt to change password";
 
+    String ALREADY_OTHER_ROLE = "This user's role has been already changed";
+    String FAILED_ATTEMPT_CHANGE_ROLE = "Failed attempt to change role";
+
     String FAILED_ATTEMPT_CHANGE_STATUS = "Failed attempt to change status";
     String ALREADY_CHANGED = "This order's status has been already changed";
+
+    String INVALID_STATUS = "Error! Invalid Status";
+    String INVALID_STATUS_CHANGE = "Error! Invalid status change";
 }

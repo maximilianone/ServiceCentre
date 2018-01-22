@@ -10,9 +10,13 @@ public interface UserDAO extends DAO<User> {
 
     List<User> getAll();
 
+    List<User> getGroupBy(Object param, String name);
+
     User authorization(String login, String password);
 
     User getById(int userID);
 
     boolean checkPassword(int userID, String password);
+
+    boolean checkRole(int userID, String role);
 }

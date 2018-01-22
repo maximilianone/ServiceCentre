@@ -11,6 +11,7 @@ import application.model.exception.ModelException;
 import application.util.constants.DBParameters;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderServiceImpl implements OrderService, DBParameters {
@@ -92,17 +93,59 @@ public class OrderServiceImpl implements OrderService, DBParameters {
         }
     }
 
+    @Override
+    public List<FullOrder> getByStatus(Object param, String name, String... statuses) {
+        try {
+            TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
+            List<FullOrder> orderList = new ArrayList<>();
+            for (String status:statuses){
+                orderList.addAll(orderDAO.getGroupByStatus(param, name, status));
+            }
+            TransactionManager.commit();
+            return orderList;
+        } catch (ModelException e) {
+            TransactionManager.rollback();
+            throw new ModelException(e);
+        }
+    }
+
 
     @Override
-    public boolean processNewOrder(int orderID, int userID,  String param, Object value, String status){
+    public void processNewOrder(int orderID, int userID, String param, Object value, String status) {
         try {
             TransactionManager.runTransaction(Connection.TRANSACTION_SERIALIZABLE);
-            boolean isNew = orderDAO.checkStatus(orderID, DB_ORDER_STATUS_NEW);
+            orderDAO.checkStatus(orderID, DB_ORDER_STATUS_NEW);
             orderDAO.update(orderID, userID, DBParameters.DB_MANAGER_ID);
             orderDAO.update(orderID, value, param);
             orderDAO.update(orderID, status, DB_ORDER_STATUS);
             TransactionManager.commit();
-            return isNew;
+        } catch (ModelException e) {
+            TransactionManager.rollback();
+            throw new ModelException(e);
+        }
+    }
+
+    @Override
+    public void changeStatus(int orderID, String status, String oldStatus) {
+        try {
+            TransactionManager.runTransaction(Connection.TRANSACTION_SERIALIZABLE);
+            orderDAO.checkStatus(orderID, oldStatus);
+            orderDAO.update(orderID, status, DB_ORDER_STATUS);
+            TransactionManager.commit();
+        } catch (ModelException e) {
+            TransactionManager.rollback();
+            throw new ModelException(e);
+        }
+    }
+
+    @Override
+    public void changeStatusAsMaster(int orderID, int masterID, String status, String oldStatus){
+        try {
+            TransactionManager.runTransaction(Connection.TRANSACTION_SERIALIZABLE);
+            orderDAO.checkStatus(orderID, oldStatus);
+            orderDAO.update(orderID, status, DB_ORDER_STATUS);
+            orderDAO.update(orderID, masterID, DB_MASTER_ID);
+            TransactionManager.commit();
         } catch (ModelException e) {
             TransactionManager.rollback();
             throw new ModelException(e);

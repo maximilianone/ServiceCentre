@@ -13,5 +13,7 @@ public interface OrderDAO extends DAO<Order> {
 
     List<FullOrder> getGroupBy(Object param, String name);
 
+    List<FullOrder> getGroupByStatus(Object param, String name, String status);
+
     boolean checkStatus(int orderID, String status);
 }

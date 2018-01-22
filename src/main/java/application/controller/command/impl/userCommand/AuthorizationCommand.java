@@ -14,21 +14,19 @@ import java.io.IOException;
 public class AuthorizationCommand implements Command {
     private UserService userService;
 
-    public AuthorizationCommand(UserService userService)
-    {
+    public AuthorizationCommand(UserService userService) {
         this.userService = userService;
     }
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException
-    {
+            throws ServletException, SecurityException, IOException {
         try {
             authorizeUser(request, response);
         } catch (ModelException e) {
             request.setAttribute("error", e.getMessage());
             System.out.println(e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request,response);
+            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
         }
     }
 
@@ -36,11 +34,14 @@ public class AuthorizationCommand implements Command {
             throws IOException, ServletException, ModelException {
         String login = request.getParameter(USER_LOGIN);
         String password = request.getParameter(USER_PASSWORD);
+
         User user = userService.authorization(login, password);
+
         HttpSession session = request.getSession();
         session.setAttribute(USER_LOGIN, user.getLogin());
         session.setAttribute(USER_ID, user.getId());
         session.setAttribute(USER_ROLE, user.getRole());
+
         response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 }

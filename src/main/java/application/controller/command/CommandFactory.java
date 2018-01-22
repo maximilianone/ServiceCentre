@@ -2,7 +2,7 @@ package application.controller.command;
 
 import application.controller.command.impl.InvalidCommand;
 import application.controller.command.impl.commentCommand.AddCommentCommand;
-import application.controller.command.impl.commentCommand.BannCommentCommand;
+import application.controller.command.impl.commentCommand.BanCommentCommand;
 import application.controller.command.impl.commentCommand.GetAllCommentsCommand;
 import application.controller.command.impl.orderCommand.*;
 import application.controller.command.impl.userCommand.*;
@@ -13,6 +13,7 @@ import application.controller.mapper.request.UserRequestMapper;
 import application.controller.mapper.result.CommentResultMapper;
 import application.controller.mapper.result.FullOrderResultMapper;
 import application.controller.mapper.result.UserResultMapper;
+import application.controller.service.abstraction.*;
 import application.controller.service.impl.CommentServiceImpl;
 import application.controller.service.impl.OrderServiceImpl;
 import application.controller.service.impl.UserServiceImpl;
@@ -20,27 +21,12 @@ import application.model.dao.impl.CommentDAOImpl;
 import application.model.dao.impl.OrderDAOImpl;
 import application.model.dao.impl.ProductDAOImpl;
 import application.model.dao.impl.UserDAOImpl;
+import application.model.entity.Order;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class CommandFactory {
-    private final static String addOrderCommand = "addOrder";
-    private final static String addUserCommand = "registration";
-    private final static String addCommentCommand = "addComment";
-    private final static String authorizationCommand = "login";
-    private final static String logOutCommand = "logout";
-    private final static String showComments = "showComments";
-    private final static String banComment = "banComment";
-    private final static String showPersonalPage = "showPersonalPage";
-    private final static String changeInfo = "changePersonalInfo";
-    private final static String changePassword = "changePassword";
-    private final static String changeOrderStatus = "changeOrderStatus";
-    private final static String searchOrders = "searchOrders";
-    private final static String showOrder = "showOrder";
-    private final static String processNewOrder = "processNewOrder";
-    private final static String showAllOrders = "showAllOrders";
-
+public class CommandFactory implements CommadList{
     private static CommandFactory ourInstance = new CommandFactory();
 
     public static CommandFactory getInstance() {
@@ -51,83 +37,71 @@ public class CommandFactory {
     private Command invalidCommand;
 
     private CommandFactory() {
+        OrderService orderServiceWithoutResult = new OrderServiceImpl(new OrderDAOImpl(), new ProductDAOImpl());
+        OrderService orderService = new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()));
+        UserService userServiceWithoutResult = new UserServiceImpl(new UserDAOImpl());
+        UserService userService = new UserServiceImpl(new UserDAOImpl(new UserResultMapper()));
+        CommentService commentService = new CommentServiceImpl(new CommentDAOImpl(new CommentResultMapper()));
+
         invalidCommand = new InvalidCommand();
 
         commandMap = new HashMap<>();
 
         commandMap.put(addOrderCommand,
-                new AddOrderCommand(
-                        new OrderServiceImpl(new OrderDAOImpl(), new ProductDAOImpl()),
+                new AddOrderCommand(orderServiceWithoutResult,
                         new ProductRequestMapper(),
                         new OrderRequestMapper()
                 ));
 
-        commandMap.put(changeOrderStatus,
-                new ChangeOrderStatusCommand(
-                        new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()))
-                ));
+        commandMap.put(changeOrderStatus, new ChangeOrderStatusCommand(orderService));
 
-        commandMap.put(showAllOrders, new ShowAllOrdersCommand(
-                new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()))
-        ));
+        commandMap.put(changeOrderStatusAsAdmin, new ChangeOrderStatusAsAdminCommand(orderService));
 
-        commandMap.put(searchOrders, new SearchOrdersCommand(
-                new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()))
-        ));
+        commandMap.put(showAllOrders, new ShowAllOrdersCommand(orderService));
 
-        commandMap.put(showOrder, new ShowOrderCommand(
-                new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()))
-        ));
+        commandMap.put(searchOrders, new SearchOrdersCommand(orderService));
 
-        commandMap.put(processNewOrder, new ProcessNewOrderCommand(
-                new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()))
-        ));
+        commandMap.put(showOrder, new ShowOrderCommand(orderService));
+
+        commandMap.put(processNewOrder, new ProcessNewOrderCommand(orderService));
+
+        commandMap.put(showMasterOrders, new ShowAllMasterOrdersCommand(orderService));
+
+        commandMap.put(searchMasterOrders, new SearchMasterOrdersCommand(orderService));
+
+        commandMap.put(changeOrderStatusAsMaster, new ChangeOrderStatusAsMasterCommand(orderService));
 
         commandMap.put(addUserCommand,
-                new AddUserCommand(
-                        new UserServiceImpl(new UserDAOImpl()),
+                new AddUserCommand(userServiceWithoutResult,
                         new UserRequestMapper()
                 ));
 
-        commandMap.put(authorizationCommand,
-                new AuthorizationCommand(
-                        new UserServiceImpl(new UserDAOImpl(new UserResultMapper()))
-                ));
+        commandMap.put(searchUsers, new SearchUsersCommand(userService));
+
+        commandMap.put(showAllUsers, new ShowAllUsersCommand(userService));
+
+        commandMap.put(changeLocale, new ChangeLocaleCommand());
+
+        commandMap.put(authorizationCommand, new AuthorizationCommand(userService));
 
         commandMap.put(logOutCommand, new LogOutCommand());
 
-        commandMap.put(showPersonalPage,
-                new ShowPersonalPageCommand(
-                        new UserServiceImpl(new UserDAOImpl(new UserResultMapper())),
-                        new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()))
-                ));
+        commandMap.put(showPersonalPage, new ShowPersonalPageCommand(userService, orderService));
 
-        commandMap.put(changeInfo,
-                new ChangeUserInfoCommand(
-                        new UserServiceImpl(new UserDAOImpl())));
+        commandMap.put(changeInfo, new ChangeUserInfoCommand(userServiceWithoutResult));
 
-        commandMap.put(changePassword,
-                new ChangePasswordCommand(
-                        new UserServiceImpl(
-                                new UserDAOImpl(new UserResultMapper())
-                        )));
+        commandMap.put(changePassword, new ChangePasswordCommand(userService));
+
+        commandMap.put(changeUserRole, new ChangeUserRoleCommand(userService));
 
         commandMap.put(addCommentCommand,
-                new AddCommentCommand(
-                        new CommentServiceImpl(new CommentDAOImpl()),
+                new AddCommentCommand(commentService,
                         new CommentRequestMapper()
                 ));
 
-        commandMap.put(showComments,
-                new GetAllCommentsCommand(
-                        new CommentServiceImpl(new CommentDAOImpl(new CommentResultMapper()))
-                ));
+        commandMap.put(showComments, new GetAllCommentsCommand(commentService));
 
-
-        commandMap.put(banComment,
-                new BannCommentCommand(
-                        new CommentServiceImpl(new CommentDAOImpl(new CommentResultMapper()))
-                ));
+        commandMap.put(banComment, new BanCommentCommand(commentService));
     }
 
     public Command getCommand(String name) {
