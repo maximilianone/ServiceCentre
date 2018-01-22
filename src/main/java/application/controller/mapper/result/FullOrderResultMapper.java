@@ -12,8 +12,7 @@ import java.sql.SQLException;
 
 public class FullOrderResultMapper implements Mapper<FullOrder, ResultSet>, DBParameters{
     @Override
-    public FullOrder map(ResultSet resultSet){
-        try {
+    public FullOrder map(ResultSet resultSet) throws SQLException{
             Order order = new Order.Builder()
                     .setOrderID(resultSet.getInt(DB_ORDER_ID))
                     .setUserID(resultSet.getInt(DB_USER_ID))
@@ -47,8 +46,5 @@ public class FullOrderResultMapper implements Mapper<FullOrder, ResultSet>, DBPa
 
 
             return new FullOrder(order, product, login, masterLogin, managerLogin);
-        } catch (SQLException e) {
-            throw new ModelException(e);
-        }
     }
 }

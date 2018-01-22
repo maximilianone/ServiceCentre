@@ -11,8 +11,7 @@ import java.sql.SQLException;
 public class UserResultMapper implements Mapper<User, ResultSet>, DBParameters {
 
     @Override
-    public User map(ResultSet resultSet){
-        try {
+    public User map(ResultSet resultSet) throws SQLException{
             return new User.Builder()
                     .setId(resultSet.getInt(DB_USER_ID))
                     .setFirstName(resultSet.getString(DB_FIRST_NAME))
@@ -23,9 +22,5 @@ public class UserResultMapper implements Mapper<User, ResultSet>, DBParameters {
                     .setPhone(resultSet.getString(DB_PHONE))
                     .setRole(resultSet.getString(DB_ROLE))
                     .build();
-        } catch (SQLException e) {
-            throw new ModelException(e);
-        }
-
     }
 }
