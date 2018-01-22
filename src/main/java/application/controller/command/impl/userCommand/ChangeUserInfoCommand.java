@@ -20,20 +20,15 @@ public class ChangeUserInfoCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
-            User user = new User.Builder()
-                    .setId(Integer.parseInt(request.getParameter(USER_ID)))
-                    .setFirstName(request.getParameter(USER_FIRST_NAME))
-                    .setLastName(request.getParameter(USER_LAST_NAME))
-                    .setPhone(request.getParameter(USER_PHONE))
-                    .build();
+        User user = new User.Builder()
+                .setId(Integer.parseInt(request.getParameter(USER_ID)))
+                .setFirstName(request.getParameter(USER_FIRST_NAME))
+                .setLastName(request.getParameter(USER_LAST_NAME))
+                .setPhone(request.getParameter(USER_PHONE))
+                .build();
 
-            changeInfo(user, request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            System.out.println(e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
+        changeInfo(user, request, response);
+
     }
 
     private void changeInfo(User user, HttpServletRequest request, HttpServletResponse response)

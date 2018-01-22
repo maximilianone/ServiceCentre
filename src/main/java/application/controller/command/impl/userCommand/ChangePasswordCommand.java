@@ -20,13 +20,9 @@ public class ChangePasswordCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
-            changePassword(request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            System.out.println(e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
+
+        changePassword(request, response);
+
     }
 
     private void changePassword(HttpServletRequest request, HttpServletResponse response)

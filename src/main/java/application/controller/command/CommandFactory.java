@@ -19,9 +19,7 @@ import application.controller.service.impl.OrderServiceImpl;
 import application.controller.service.impl.UserServiceImpl;
 import application.model.dao.impl.CommentDAOImpl;
 import application.model.dao.impl.OrderDAOImpl;
-import application.model.dao.impl.ProductDAOImpl;
 import application.model.dao.impl.UserDAOImpl;
-import application.model.entity.Order;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -45,61 +43,61 @@ public class CommandFactory implements CommadList{
 
         commandMap = new HashMap<>();
 
-        commandMap.put(addOrderCommand,
+        commandMap.put(ADD_ORDER_COMMAND,
                 new AddOrderCommand(orderService,
                         new ProductRequestMapper(),
                         new OrderRequestMapper()
                 ));
 
-        commandMap.put(changeOrderStatus, new ChangeOrderStatusCommand(orderService));
+        commandMap.put(CHANGE_ORDER_STATUS, new ChangeOrderStatusCommand(orderService));
 
-        commandMap.put(changeOrderStatusAsAdmin, new ChangeOrderStatusAsAdminCommand(orderService));
+        commandMap.put(CHANGE_ORDER_STATUS_AS_ADMIN, new ChangeOrderStatusAsAdminCommand(orderService));
 
-        commandMap.put(showAllOrders, new ShowAllOrdersCommand(orderService));
+        commandMap.put(SHOW_ALL_ORDERS, new ShowAllOrdersCommand(orderService));
 
-        commandMap.put(searchOrders, new SearchOrdersCommand(orderService));
+        commandMap.put(SEARCH_ORDERS, new SearchOrdersCommand(orderService));
 
-        commandMap.put(showOrder, new ShowOrderCommand(orderService));
+        commandMap.put(SHOW_ORDER, new ShowOrderCommand(orderService));
 
-        commandMap.put(processNewOrder, new ProcessNewOrderCommand(orderService));
+        commandMap.put(PROCESS_NEW_ORDER, new ProcessNewOrderCommand(orderService));
 
-        commandMap.put(showMasterOrders, new ShowAllMasterOrdersCommand(orderService));
+        commandMap.put(SHOW_MASTER_ORDERS, new ShowAllMasterOrdersCommand(orderService));
 
-        commandMap.put(searchMasterOrders, new SearchMasterOrdersCommand(orderService));
+        commandMap.put(SEARCH_MASTER_ORDERS, new SearchMasterOrdersCommand(orderService));
 
-        commandMap.put(changeOrderStatusAsMaster, new ChangeOrderStatusAsMasterCommand(orderService));
+        commandMap.put(CHANGE_ORDER_STATUS_AS_MASTER, new ChangeOrderStatusAsMasterCommand(orderService));
 
-        commandMap.put(addUserCommand,
+        commandMap.put(ADD_USER_COMMAND,
                 new AddUserCommand(userService,
                         new UserRequestMapper()
                 ));
 
-        commandMap.put(searchUsers, new SearchUsersCommand(userService));
+        commandMap.put(SEARCH_USERS, new SearchUsersCommand(userService));
 
-        commandMap.put(showAllUsers, new ShowAllUsersCommand(userService));
+        commandMap.put(SHOW_ALL_USERS, new ShowAllUsersCommand(userService));
 
-        commandMap.put(changeLocale, new ChangeLocaleCommand());
+        commandMap.put(CHANGE_LOCALE, new ChangeLocaleCommand());
 
-        commandMap.put(authorizationCommand, new AuthorizationCommand(userService));
+        commandMap.put(AUTHORIZATION_COMMAND, new AuthorizationCommand(userService));
 
-        commandMap.put(logOutCommand, new LogOutCommand());
+        commandMap.put(LOG_OUT_COMMAND, new LogOutCommand());
 
-        commandMap.put(showPersonalPage, new ShowPersonalPageCommand(userService, orderService));
+        commandMap.put(SHOW_PERSONAL_PAGE, new ShowPersonalPageCommand(userService, orderService));
 
-        commandMap.put(changeInfo, new ChangeUserInfoCommand(userService));
+        commandMap.put(CHANGE_INFO, new ChangeUserInfoCommand(userService));
 
-        commandMap.put(changePassword, new ChangePasswordCommand(userService));
+        commandMap.put(CHANGE_PASSWORD, new ChangePasswordCommand(userService));
 
-        commandMap.put(changeUserRole, new ChangeUserRoleCommand(userService));
+        commandMap.put(CHANGE_USER_ROLE, new ChangeUserRoleCommand(userService));
 
-        commandMap.put(addCommentCommand,
+        commandMap.put(ADD_COMMENT_COMMAND,
                 new AddCommentCommand(commentService,
                         new CommentRequestMapper()
                 ));
 
-        commandMap.put(showComments, new GetAllCommentsCommand(commentService));
+        commandMap.put(SHOW_COMMENTS, new GetAllCommentsCommand(commentService));
 
-        commandMap.put(banComment, new BanCommentCommand(commentService));
+        commandMap.put(BAN_COMMENT, new BanCommentCommand(commentService));
     }
 
     public Command getCommand(String name) {

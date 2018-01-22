@@ -23,7 +23,7 @@ public class ChangeOrderStatusCommand implements Command, DBParameters {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
+
             int orderID = Integer.parseInt(request.getParameter(ORDER_ID));
             String status = request.getParameter(ORDER_STATUS);
             String oldStatus = request.getParameter(OLD_ORDER_STATUS);
@@ -35,10 +35,6 @@ public class ChangeOrderStatusCommand implements Command, DBParameters {
             int userID = Integer.parseInt(request.getParameter(USER_ID));
             getUsersOrdersInfo(userID, request, response);
 
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
     }
 
     private void changeStatus(int orderID, String status, String oldStatus) {

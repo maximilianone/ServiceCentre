@@ -22,7 +22,7 @@ public class ProcessNewOrderCommand implements Command, DBParameters {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
+
             String status = request.getParameter(ORDER_STATUS);
 
             OrderStatusChangeValidator.validateStatusChange(ORDER_STATUS_NEW, status);
@@ -42,10 +42,6 @@ public class ProcessNewOrderCommand implements Command, DBParameters {
             processNewOrder(orderID, userID, param, value, status);
 
             getOrder(orderID, request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
     }
 
     private void processNewOrder(int orderID, int userID, String param, Object value, String status){

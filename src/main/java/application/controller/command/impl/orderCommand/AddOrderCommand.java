@@ -33,13 +33,8 @@ public class AddOrderCommand implements Command {
             throws ServletException, SecurityException, IOException {
         Product product = productRequestMapper.map(request);
         Order order = orderRequestMapper.map(request);
+        addOrder(request, response, product, order);
 
-        try {
-            addOrder(request, response, product, order);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
     }
 
     private void addOrder(HttpServletRequest request, HttpServletResponse response, Product product, Order order)

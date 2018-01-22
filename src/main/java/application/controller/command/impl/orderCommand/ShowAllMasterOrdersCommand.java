@@ -22,7 +22,7 @@ public class ShowAllMasterOrdersCommand implements Command, DBParameters {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
+
             List<FullOrder> orderList;
 
             if (request.getParameter(MASTER).equals("current")) {
@@ -33,10 +33,7 @@ public class ShowAllMasterOrdersCommand implements Command, DBParameters {
             }
 
             sendRedirect(orderList, request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
+
     }
 
     private List<FullOrder> getAllOrders(String status, HttpServletRequest request) {

@@ -28,14 +28,9 @@ public class AddCommentCommand implements Command {
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
         Comment comment = commentRequestMapper.map(request);
-        try {
-            addComment(comment);
+        addComment(comment);
 
-            showComments(request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
+        showComments(request, response);
     }
 
     private void addComment(Comment comment)

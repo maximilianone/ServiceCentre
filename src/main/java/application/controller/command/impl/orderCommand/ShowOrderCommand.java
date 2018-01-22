@@ -22,14 +22,11 @@ public class ShowOrderCommand implements Command, DBParameters {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
-            int orderID = Integer.parseInt(request.getParameter(ORDER_ID));
 
-            getOrder(orderID, request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
+        int orderID = Integer.parseInt(request.getParameter(ORDER_ID));
+
+        getOrder(orderID, request, response);
+
     }
 
     private void getOrder(int orderID, HttpServletRequest request, HttpServletResponse response)

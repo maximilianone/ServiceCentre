@@ -22,17 +22,12 @@ public class BanCommentCommand implements Command, DBParameters {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
-            int commentID = Integer.parseInt(request.getParameter(COMMENT_ID));
+        int commentID = Integer.parseInt(request.getParameter(COMMENT_ID));
 
-            banComment(commentID);
+        banComment(commentID);
 
-            showComments(request, response);
+        showComments(request, response);
 
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
     }
 
     private void banComment(int commentID)

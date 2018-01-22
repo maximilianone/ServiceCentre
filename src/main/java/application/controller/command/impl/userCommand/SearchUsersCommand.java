@@ -21,16 +21,11 @@ public class SearchUsersCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
-            Object param = request.getParameter(SEARCH_VALUE);
-            String name = request.getParameter(SEARCH_PARAMETER);
+        Object param = request.getParameter(SEARCH_VALUE);
+        String name = request.getParameter(SEARCH_PARAMETER);
 
-            getUsers(param, name, request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            System.out.println(e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
+        getUsers(param, name, request, response);
+
     }
 
     private void getUsers(Object param, String name, HttpServletRequest request, HttpServletResponse response)

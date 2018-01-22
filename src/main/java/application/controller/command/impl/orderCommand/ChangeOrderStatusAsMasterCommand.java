@@ -23,7 +23,6 @@ public class ChangeOrderStatusAsMasterCommand implements Command, DBParameters {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
             String status = request.getParameter(ORDER_STATUS);
             String oldStatus = request.getParameter(OLD_ORDER_STATUS);
 
@@ -43,10 +42,6 @@ public class ChangeOrderStatusAsMasterCommand implements Command, DBParameters {
             }
 
             sendRedirect(orderList, request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
     }
 
     private void changeStatusAsMaster(int orderID, int masterID, String status, String oldStatus){

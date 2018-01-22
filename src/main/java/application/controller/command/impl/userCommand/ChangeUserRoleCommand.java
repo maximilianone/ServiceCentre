@@ -21,19 +21,14 @@ public class ChangeUserRoleCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
-            int userID = Integer.parseInt(request.getParameter(UPDATED_USER_ID));
-            String oldRole = request.getParameter(OLD_USER_ROLE);
-            String newRole = request.getParameter(NEW_USER_ROLE);
+        int userID = Integer.parseInt(request.getParameter(UPDATED_USER_ID));
+        String oldRole = request.getParameter(OLD_USER_ROLE);
+        String newRole = request.getParameter(NEW_USER_ROLE);
 
-            changeRole(userID, oldRole, newRole);
+        changeRole(userID, oldRole, newRole);
 
-            showUsers(request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            System.out.println(e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
+        showUsers(request, response);
+
     }
 
     private void changeRole(int userID, String oldRole, String newRole) {

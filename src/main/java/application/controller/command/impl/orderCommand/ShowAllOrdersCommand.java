@@ -22,20 +22,17 @@ public class ShowAllOrdersCommand implements Command, DBParameters {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
-            List<FullOrder> orderList;
-            if (request.getParameter(AS_ADMIN).equals("true")) {
-                int adminID = (Integer) request.getSession().getAttribute(USER_ID);
-                orderList = getOrdersForAdmin(adminID, request);
-            } else {
-                orderList = getAllOrders(request);
-            }
 
-            sendRedirect(orderList, request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
+        List<FullOrder> orderList;
+        if (request.getParameter(AS_ADMIN).equals("true")) {
+            int adminID = (Integer) request.getSession().getAttribute(USER_ID);
+            orderList = getOrdersForAdmin(adminID, request);
+        } else {
+            orderList = getAllOrders(request);
         }
+
+        sendRedirect(orderList, request, response);
+
     }
 
     private List<FullOrder> getAllOrders(HttpServletRequest request) {

@@ -21,13 +21,9 @@ public class AuthorizationCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
-            authorizeUser(request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            System.out.println(e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
+
+        authorizeUser(request, response);
+
     }
 
     private void authorizeUser(HttpServletRequest request, HttpServletResponse response)

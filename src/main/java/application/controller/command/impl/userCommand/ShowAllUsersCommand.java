@@ -21,13 +21,9 @@ public class ShowAllUsersCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
-            getUsers(request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            System.out.println(e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
+
+        getUsers(request, response);
+
     }
 
     private void getUsers(HttpServletRequest request, HttpServletResponse response)

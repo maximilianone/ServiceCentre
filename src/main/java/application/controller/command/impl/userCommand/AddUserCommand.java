@@ -28,14 +28,11 @@ public class AddUserCommand implements Command {
             throws ServletException, SecurityException, IOException {
         User user = userRequestMapper.map(request);
 
-        try {
-            user.setId(addUser(user));
 
-            authorizeUser(user, request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
+        user.setId(addUser(user));
+
+        authorizeUser(user, request, response);
+
     }
 
     private int addUser(User user)

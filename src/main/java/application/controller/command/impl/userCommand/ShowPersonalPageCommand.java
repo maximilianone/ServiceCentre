@@ -25,17 +25,12 @@ public class ShowPersonalPageCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
-            int userID = (Integer) request.getSession().getAttribute(USER_ID);
+        int userID = (Integer) request.getSession().getAttribute(USER_ID);
 
-            getUserInfo(userID, request);
+        getUserInfo(userID, request);
 
-            getOrdersInfo(userID, request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            System.out.println(e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
+        getOrdersInfo(userID, request, response);
+
     }
 
     private void getUserInfo(int userID, HttpServletRequest request) {

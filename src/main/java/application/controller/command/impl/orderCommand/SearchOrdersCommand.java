@@ -22,7 +22,7 @@ public class SearchOrdersCommand implements Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, SecurityException, IOException {
-        try {
+
             Object param = request.getParameter(SEARCH_VALUE);
             String name = request.getParameter(SEARCH_PARAMETER);
 
@@ -35,10 +35,6 @@ public class SearchOrdersCommand implements Command {
             }
 
             sendRedirect(orderList, request, response);
-        } catch (ModelException e) {
-            request.setAttribute("error", e.getMessage());
-            request.getRequestDispatcher(ERROR_PAGE).forward(request, response);
-        }
     }
 
     private List<FullOrder> getOrders(Object param, String name){
