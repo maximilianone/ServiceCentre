@@ -6,6 +6,10 @@ import application.util.constants.ErrorMessages;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * order status change validator
+ */
+
 public class OrderStatusChangeValidator implements ErrorMessages{
     private static OrderStatusChangeValidator ourInstance = new OrderStatusChangeValidator();
 
@@ -17,6 +21,12 @@ public class OrderStatusChangeValidator implements ErrorMessages{
 
     private OrderStatusChangeValidator() {
     }
+
+    /**
+     * validate status change
+     * @param oldStatus old status
+     * @param newStatus new status
+     */
 
 
     public static void validateStatusChange(String oldStatus, String newStatus){
@@ -58,6 +68,12 @@ public class OrderStatusChangeValidator implements ErrorMessages{
                 throw new ModelException(INVALID_STATUS_CHANGE);
         }
     }
+
+    /**
+     * validate status
+     * @param status to validate
+     * @return status if valid
+     */
 
     private static Status validateStatus(String status){
         try {

@@ -15,6 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * command to add new order
+ */
+
 public class AddCommentCommand implements Command {
     private CommentService commentService;
     private Mapper<Comment, HttpServletRequest> commentRequestMapper;
@@ -24,22 +28,39 @@ public class AddCommentCommand implements Command {
         this.commentRequestMapper = commentRequestMapper;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException {
+            throws SecurityException, IOException {
         Comment comment = commentRequestMapper.map(request);
         addComment(comment);
 
         showComments(request, response);
     }
 
-    private void addComment(Comment comment)
-            throws IOException, ServletException, ModelException {
+    /**
+     * add new comment to database
+     *
+     * @param comment comment to be added
+     */
+
+    private void addComment(Comment comment){
         commentService.add(comment);
     }
 
+    /**
+     * get all comments from db and show them on page
+     *
+     * @param request request to server
+     * @param response response to server
+     * @throws IOException when failed to send redirect
+     */
+
     private void showComments(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, ModelException {
+            throws IOException{
         List<FullComment> commentList = commentService.getAll();
         request.getSession().setAttribute("comments", commentList);
         response.sendRedirect(request.getContextPath() + "/jsp/comment.jsp");

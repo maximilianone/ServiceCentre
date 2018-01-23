@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * command to add new user
+ */
+
 public class AddUserCommand implements Command {
     private UserService userService;
     private Mapper<User, HttpServletRequest> userRequestMapper;
@@ -23,11 +27,14 @@ public class AddUserCommand implements Command {
         this.userRequestMapper = userRequestMapper;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException {
+            throws IOException {
         User user = userRequestMapper.map(request);
-
 
         user.setId(addUser(user));
 
@@ -35,13 +42,28 @@ public class AddUserCommand implements Command {
 
     }
 
-    private int addUser(User user)
-            throws IOException, ServletException, ModelException {
+    /**
+     * add new user
+     *
+     * @param user user to add
+     * @return id of a user who was added
+     */
+
+    private int addUser(User user) {
         return userService.add(user);
     }
 
+    /**
+     * authorize new user
+     *
+     * @param user user to authorize
+     * @param request request to server
+     * @param response response to server
+     * @throws IOException when failed to send redirect
+     */
+
     private void authorizeUser(User user, HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, ModelException {
+            throws IOException{
         HttpSession session = request.getSession();
         session.setAttribute(USER_LOGIN, user.getLogin());
         session.setAttribute(USER_ID, user.getId());

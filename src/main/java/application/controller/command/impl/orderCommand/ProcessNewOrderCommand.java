@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * command to process new order
+ */
+
 public class ProcessNewOrderCommand implements Command, DBParameters {
     private OrderService orderService;
 
@@ -19,9 +23,13 @@ public class ProcessNewOrderCommand implements Command, DBParameters {
         this.orderService = orderService;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException {
+            throws ServletException, IOException {
 
             String status = request.getParameter(ORDER_STATUS);
 
@@ -44,9 +52,29 @@ public class ProcessNewOrderCommand implements Command, DBParameters {
             getOrder(orderID, request, response);
     }
 
+    /**
+     * change information of order with status new
+     *
+     * @param orderID order id of order to change
+     * @param userID admin id of admin who is processing new order
+     * @param param parameter to add
+     * @param value value of parameter to add
+     * @param status new status of order
+     */
+
     private void processNewOrder(int orderID, int userID, String param, Object value, String status){
         orderService.processNewOrder(orderID, userID, param, value, status);
     }
+
+    /**
+     * get updated information about changed order
+     *
+     * @param orderID order id of order to get information
+     * @param request request to server
+     * @param response response to server
+     * @throws IOException when failed to send redirect
+     * @throws ServletException when failed to get dispatcher
+     */
 
     private void getOrder(int orderID, HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {

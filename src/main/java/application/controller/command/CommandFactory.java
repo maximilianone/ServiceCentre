@@ -17,12 +17,18 @@ import application.controller.service.abstraction.*;
 import application.controller.service.impl.CommentServiceImpl;
 import application.controller.service.impl.OrderServiceImpl;
 import application.controller.service.impl.UserServiceImpl;
+import application.model.dao.abstraction.ProductDAO;
 import application.model.dao.impl.CommentDAOImpl;
 import application.model.dao.impl.OrderDAOImpl;
+import application.model.dao.impl.ProductDAOImpl;
 import application.model.dao.impl.UserDAOImpl;
 
 import java.util.HashMap;
 import java.util.Map;
+
+/**
+ * command factory to determine commands from request
+ */
 
 public class CommandFactory implements CommadList{
     private static CommandFactory ourInstance = new CommandFactory();
@@ -35,7 +41,8 @@ public class CommandFactory implements CommadList{
     private Command invalidCommand;
 
     private CommandFactory() {
-        OrderService orderService = new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()));
+        OrderService orderService = new OrderServiceImpl(new OrderDAOImpl(new FullOrderResultMapper()), new ProductDAOImpl());
+
         UserService userService = new UserServiceImpl(new UserDAOImpl(new UserResultMapper()));
         CommentService commentService = new CommentServiceImpl(new CommentDAOImpl(new CommentResultMapper()));
 

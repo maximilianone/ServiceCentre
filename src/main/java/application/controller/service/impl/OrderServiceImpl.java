@@ -27,6 +27,10 @@ public class OrderServiceImpl implements OrderService, DBParameters {
         this.orderDAO = orderDAO;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public Integer add(Product product, Order order) throws ModelException {
         TransactionManager.runTransaction(Connection.TRANSACTION_READ_COMMITTED);
@@ -41,6 +45,10 @@ public class OrderServiceImpl implements OrderService, DBParameters {
         }
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public List<FullOrder> getAll() {
         try {
@@ -53,6 +61,10 @@ public class OrderServiceImpl implements OrderService, DBParameters {
             throw new ModelException(e);
         }
     }
+
+    /**
+     *@inheritDoc
+     */
 
     @Override
     public Boolean update(int orderId, Object newValue, String fieldName) {
@@ -67,6 +79,10 @@ public class OrderServiceImpl implements OrderService, DBParameters {
         }
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public List<FullOrder> getByUserId(int userId) {
         try {
@@ -80,6 +96,10 @@ public class OrderServiceImpl implements OrderService, DBParameters {
         }
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public List<FullOrder> getBy(Object param, String name) {
         try {
@@ -92,6 +112,10 @@ public class OrderServiceImpl implements OrderService, DBParameters {
             throw new ModelException(e);
         }
     }
+
+    /**
+     *@inheritDoc
+     */
 
     @Override
     public List<FullOrder> getByStatus(Object param, String name, String... statuses) {
@@ -109,6 +133,10 @@ public class OrderServiceImpl implements OrderService, DBParameters {
         }
     }
 
+    /**
+     *@inheritDoc
+     */
+
 
     @Override
     public void processNewOrder(int orderID, int userID, String param, Object value, String status) {
@@ -125,6 +153,10 @@ public class OrderServiceImpl implements OrderService, DBParameters {
         }
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public void changeStatus(int orderID, String status, String oldStatus) {
         try {
@@ -137,6 +169,10 @@ public class OrderServiceImpl implements OrderService, DBParameters {
             throw new ModelException(e);
         }
     }
+
+    /**
+     *@inheritDoc
+     */
 
     @Override
     public void changeStatusAsMaster(int orderID, int masterID, String status, String oldStatus){

@@ -12,6 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * command to show all masters orders
+ */
+
 public class ShowAllMasterOrdersCommand implements Command, DBParameters {
     private OrderService orderService;
 
@@ -19,9 +23,13 @@ public class ShowAllMasterOrdersCommand implements Command, DBParameters {
         this.orderService = orderService;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException {
+            throws IOException {
 
             List<FullOrder> orderList;
 
@@ -36,15 +44,38 @@ public class ShowAllMasterOrdersCommand implements Command, DBParameters {
 
     }
 
+    /**
+     * get all orders which masters can execute
+     *
+     * @param status status of orders which can be executed
+     * @return list of found orders
+     */
+
     private List<FullOrder> getAllOrders(String status, HttpServletRequest request) {
         request.getSession().setAttribute(MASTER, "all");
         return orderService.getBy(status, DB_ORDER_STATUS);
     }
 
+    /**
+     * get all orders which are executed by specified master
+     *
+     * @param masterID master id whose orders to search
+     * @param status statuses of master's orders
+     * @return list of found orders
+     */
+
     private List<FullOrder> getOrdersForMaster(int masterID, HttpServletRequest request, String... status) {
         request.getSession().setAttribute(MASTER, "current");
         return orderService.getByStatus(masterID, DB_MASTER_ID, status);
     }
+
+    /**
+     * send redirect to order list page
+     * @param orders order list to show
+     * @param request request to server
+     * @param response response to server
+     * @throws IOException when failed to send redirect
+     */
 
     private void sendRedirect(List<FullOrder> orders, HttpServletRequest request, HttpServletResponse response)
             throws IOException {

@@ -17,6 +17,10 @@ public class ProductServiceImpl implements ProductService {
         this.productDao = productDao;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public Integer add(Product product) throws ModelException{
         try {
@@ -29,6 +33,10 @@ public class ProductServiceImpl implements ProductService {
             throw new ModelException(e);
         }
     }
+
+    /**
+     *@inheritDoc
+     */
 
     @Override
     public Boolean update(int productId, Object newValue, String fieldName){

@@ -16,6 +16,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * command to add order to database
+ */
+
 public class AddOrderCommand implements Command {
     private OrderService orderService;
     private Mapper<Product, HttpServletRequest> productRequestMapper;
@@ -28,17 +32,31 @@ public class AddOrderCommand implements Command {
         this.orderRequestMapper = orderRequestMapper;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException {
+            throws IOException {
         Product product = productRequestMapper.map(request);
         Order order = orderRequestMapper.map(request);
         addOrder(request, response, product, order);
 
     }
 
+    /**
+     * adds new order, product and send redirect to successful added page
+     * @param request request to server
+     * @param response response to server
+     * @param product product to be added
+     * @param order order to be added
+     * @throws IOException when failed to sent redirect
+     * @throws ModelException when failed yo add new order
+     */
+
     private void addOrder(HttpServletRequest request, HttpServletResponse response, Product product, Order order)
-            throws IOException, ServletException, ModelException {
+            throws IOException{
         orderService.add(product, order);
 
         response.sendRedirect(request.getContextPath() + "/jsp/successOrderCreation.jsp");

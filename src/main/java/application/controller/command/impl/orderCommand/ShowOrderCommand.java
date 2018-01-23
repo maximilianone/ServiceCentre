@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * command to show order details
+ */
+
 public class ShowOrderCommand implements Command, DBParameters {
 
     private OrderService orderService;
@@ -19,15 +23,29 @@ public class ShowOrderCommand implements Command, DBParameters {
         this.orderService = orderService;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException {
+            throws ServletException, IOException {
 
         int orderID = Integer.parseInt(request.getParameter(ORDER_ID));
 
         getOrder(orderID, request, response);
 
     }
+
+    /**
+     * show information about specified order
+     *
+     * @param orderID order id of order to show
+     * @param request request to server
+     * @param response response to server
+     * @throws IOException when failed to send redirect
+     * @throws ServletException when failed to get request dispatcher
+     */
 
     private void getOrder(int orderID, HttpServletRequest request, HttpServletResponse response)
             throws IOException, ServletException {

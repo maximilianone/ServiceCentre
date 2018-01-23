@@ -17,6 +17,10 @@ public class CommentServiceImpl implements CommentService{
         this.commentDAO = commentDAO;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public Integer add(Comment comment) throws ModelException {
         try {
@@ -30,6 +34,10 @@ public class CommentServiceImpl implements CommentService{
         }
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public List<FullComment> getAll(){
         try {
@@ -42,6 +50,10 @@ public class CommentServiceImpl implements CommentService{
             throw new ModelException(e);
         }
     }
+
+    /**
+     *@inheritDoc
+     */
 
     @Override
     public Boolean update(int commentId, Object newValue, String fieldName){

@@ -1,8 +1,12 @@
 package application.controller.mapper;
 
 
-import java.sql.SQLException;
 
 public interface Mapper<T, P> {
-    T map(P p) throws SQLException;
+    /**
+     * map P to get T
+     * @param p object to map
+     * @return mapped object
+     */
+    T map(P p);
 }

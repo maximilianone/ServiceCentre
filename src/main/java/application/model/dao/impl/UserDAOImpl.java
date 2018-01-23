@@ -39,6 +39,10 @@ public class UserDAOImpl implements UserDAO {
 
     }
 
+    /**
+     * @inheritDoc
+     */
+
     @Override
     public Integer create(User user) {
         try {
@@ -50,7 +54,7 @@ public class UserDAOImpl implements UserDAO {
             parameterMap.put(5, user.getEmail());
             parameterMap.put(6, user.getPhone());
             int newID = DAOTemplate.executeInsert(CREATE, parameterMap);
-            logger.info("New user added: " + user);
+            logger.info("New user added");
             return newID;
         } catch (ModelException e) {
             logger.error(ADD_USER_ERROR);
@@ -61,6 +65,10 @@ public class UserDAOImpl implements UserDAO {
         }
 
     }
+
+    /**
+     * @inheritDoc
+     */
 
     @Override
     public List<User> getAll() {
@@ -73,6 +81,10 @@ public class UserDAOImpl implements UserDAO {
             throw new ModelException(USER_SELECT_ERROR);
         }
     }
+
+    /**
+     * @inheritDoc
+     */
 
     @Override
     public List<User> getGroupBy(Object param, String name) {
@@ -89,6 +101,10 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
+    /**
+     * @inheritDoc
+     */
+
     @Override
     public Boolean update(int userID, Object newValue, String fieldName) {
         try {
@@ -101,9 +117,20 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
+    /**
+     * create parametrized update query
+     *
+     * @param fieldName parameter name
+     * @return query
+     */
+
     private String createUpdateQuery(String fieldName) {
         return "Update USERS SET " + fieldName + " = ? WHERE user_id = ?";
     }
+
+    /**
+     * @inheritDoc
+     */
 
     @Override
     public User authorization(String login, String password) {
@@ -120,6 +147,10 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
+    /**
+     * @inheritDoc
+     */
+
     @Override
     public User getById(int userID) {
         try {
@@ -133,6 +164,10 @@ public class UserDAOImpl implements UserDAO {
             throw new ModelException(WRONG_AUTHORIZATION_INFO);
         }
     }
+
+    /**
+     * @inheritDoc
+     */
 
     @Override
     public boolean checkPassword(int userID, String password) {
@@ -149,6 +184,10 @@ public class UserDAOImpl implements UserDAO {
         }
     }
 
+    /**
+     * @inheritDoc
+     */
+
     @Override
     public boolean checkRole(int userID, String role) {
         try {
@@ -163,6 +202,13 @@ public class UserDAOImpl implements UserDAO {
             throw new ModelException(ALREADY_OTHER_ROLE);
         }
     }
+
+    /**
+     * create parametrized select query
+     *
+     * @param fieldName parameter name
+     * @return query
+     */
 
     private String createSelectQuery(String fieldName) {
         return "Select * from Users WHERE " + fieldName + " = ?";

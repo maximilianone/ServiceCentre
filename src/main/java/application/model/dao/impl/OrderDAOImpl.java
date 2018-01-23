@@ -43,6 +43,10 @@ public class OrderDAOImpl implements OrderDAO {
 
     }
 
+    /**
+     * @inheritDoc
+     */
+
     @Override
     public Integer create(Order order) {
         try {
@@ -52,13 +56,17 @@ public class OrderDAOImpl implements OrderDAO {
             parameterMap.put(3, order.getProblemDescription());
             parameterMap.put(4, order.getDateOfPlacement());
             int newID = DAOTemplate.executeInsert(CREATE, parameterMap);
-            logger.info("New order added: " + order);
+            logger.info("New order added");
             return newID;
         } catch (SQLException | ModelException e) {
             logger.error(ADD_ORDER_ERROR);
             throw new ModelException(ADD_ORDER_ERROR);
         }
     }
+
+    /**
+     * @inheritDoc
+     */
 
     @Override
     public Boolean update(int orderID, Object newValue, String fieldName) {
@@ -72,6 +80,9 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
+    /**
+     * @inheritDoc
+     */
 
     @Override
     public List<FullOrder> getAll() {
@@ -84,6 +95,10 @@ public class OrderDAOImpl implements OrderDAO {
             throw new ModelException(ORDER_SELECT_ERROR);
         }
     }
+
+    /**
+     * @inheritDoc
+     */
 
     @Override
     public List<FullOrder> getGroupBy(Object param, String name) {
@@ -99,6 +114,10 @@ public class OrderDAOImpl implements OrderDAO {
             throw new ModelException(ORDER_SELECT_ERROR);
         }
     }
+
+    /**
+     * @inheritDoc
+     */
 
     @Override
     public List<FullOrder> getGroupByStatus(Object param, String name, String status) {
@@ -116,9 +135,23 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
+    /**
+     * create parametrized update query
+     *
+     * @param fieldName parameter name
+     * @return query
+     */
+
     private String createUpdateQuery(String fieldName) {
         return "Update Orders SET " + fieldName + " = ? WHERE order_id = ?";
     }
+
+    /**
+     * create parametrized select query
+     *
+     * @param fieldName parameter name
+     * @return query
+     */
 
     private String createSelectQuery(String fieldName) {
         String query = "Select * from Orders INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
@@ -132,6 +165,13 @@ public class OrderDAOImpl implements OrderDAO {
         }
         return query;
     }
+
+    /**
+     * create parametrized select query with status parameter
+     *
+     * @param fieldName parameter name
+     * @return query
+     */
 
     private String createSelectQueryWithStatus(String fieldName) {
         String query = "Select * from Orders INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
@@ -152,6 +192,10 @@ public class OrderDAOImpl implements OrderDAO {
         }
         return query;
     }
+
+    /**
+     * @inheritDoc
+     */
 
     @Override
     public boolean checkStatus(int orderID, String status) {

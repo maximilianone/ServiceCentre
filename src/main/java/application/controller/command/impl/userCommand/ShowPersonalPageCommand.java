@@ -13,6 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * command to show user's personal page
+ */
+
 public class ShowPersonalPageCommand implements Command {
     private UserService userService;
     private OrderService orderService;
@@ -21,6 +25,10 @@ public class ShowPersonalPageCommand implements Command {
         this.userService = userService;
         this.orderService = orderService;
     }
+
+    /**
+     * @inheritDoc
+     */
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
@@ -33,6 +41,13 @@ public class ShowPersonalPageCommand implements Command {
 
     }
 
+    /**
+     * get user info
+     *
+     * @param userID user id of user whose info to show
+     * @param request request to server
+     */
+
     private void getUserInfo(int userID, HttpServletRequest request) {
         User userInfo = userService.getById(userID);
 
@@ -41,6 +56,14 @@ public class ShowPersonalPageCommand implements Command {
         request.getSession().setAttribute("phone", userInfo.getPhone());
         request.getSession().setAttribute("email", userInfo.getEmail());
     }
+
+    /**
+     * get user's orders
+     * @param userID user id of user whose orders to show
+     * @param request request to server
+     * @param response response to server
+     * @throws IOException when failed to send redirect
+     */
 
     private void getOrdersInfo(int userID, HttpServletRequest request, HttpServletResponse response)
             throws IOException {

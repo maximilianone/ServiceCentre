@@ -19,6 +19,10 @@ public class ProductDAOImpl implements ProductDAO {
 
     private static final String CREATE = "INSERT INTO PRODUCT(product_name, product_type) VALUES(?, ?)";
 
+    /**
+     * @inheritDoc
+     */
+
     @Override
     public Integer create(Product product) {
         try {
@@ -26,13 +30,17 @@ public class ProductDAOImpl implements ProductDAO {
             parameterMap.put(1, product.getProductName());
             parameterMap.put(2, product.getProductType());
             int newID = DAOTemplate.executeInsert(CREATE, parameterMap);
-            logger.info("New product is added: " + product);
+            logger.info("New product is added");
             return newID;
         } catch (SQLException | ModelException e) {
             logger.error(ADD_PRODUCT_ERROR);
             throw new ModelException(ADD_PRODUCT_ERROR);
         }
     }
+
+    /**
+     * @inheritDoc
+     */
 
     @Override
     public Boolean update(int productID, Object newValue, String fieldName) {
@@ -45,6 +53,12 @@ public class ProductDAOImpl implements ProductDAO {
             throw new ModelException(PRODUCT_UPDATE_ERROR);
         }
     }
+
+    /**
+     * create parametrized update query
+     * @param fieldName parameter name
+     * @return query
+     */
 
     private String createUpdateQuery(String fieldName) {
         return "Update PRODUCT SET " + fieldName + " = ? WHERE product_id = ?";

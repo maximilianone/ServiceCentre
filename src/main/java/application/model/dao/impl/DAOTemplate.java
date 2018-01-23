@@ -15,12 +15,29 @@ import java.util.List;
 import java.util.Map;
 
 class DAOTemplate {
+
+    /**
+     * aet parameters to prepared statement
+     * @param parameterMap parameters
+     * @param preparedStatement prepared statement
+     * @throws SQLException when failed to set parameters to statement
+     */
+
     private static void setSQLParameters(Map<Integer, Object> parameterMap, PreparedStatement preparedStatement)
             throws SQLException {
         for (Integer i : parameterMap.keySet()) {
             preparedStatement.setObject(i, parameterMap.get(i));
         }
     }
+
+    /**
+     * execute insert
+     *
+     * @param query insert query
+     * @param parameterMap parameters
+     * @return genereted key of inserted entity
+     * @throws com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException when fail to insert entity
+     */
 
     static Integer executeInsert(String query, Map<Integer, Object> parameterMap)
             throws com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException {
@@ -40,9 +57,27 @@ class DAOTemplate {
         }
     }
 
+    /**
+     * select all
+     * @param mapper result mapper
+     * @param query query
+     * @param <T> entity to select
+     * @return list of entities
+     */
+
     static <T> List<T> selectAll(Mapper<T, ResultSet> mapper, String query) {
         return selectGroup(mapper, query, new HashMap<>());
     }
+
+    /**
+     * select group by parameters
+     *
+     * @param mapper result mapper
+     * @param query query
+     * @param parameterMap parameters
+     * @param <T> entity to select
+     * @return list of entities
+     */
 
     static <T> List<T> selectGroup(Mapper<T, ResultSet> mapper, String query, Map<Integer, Object> parameterMap){
         DBConnection connection = TransactionManager.getConnection();
@@ -67,6 +102,14 @@ class DAOTemplate {
         }
     }
 
+    /**
+     * execute update
+     * @param query query
+     * @param id id of entity to update
+     * @param newValue new value of updated field
+     * @return status of update
+     */
+
     static Boolean executeUpdate(String query, int id, Object newValue) {
         Map<Integer, Object> parameterMap = new HashMap<>();
         parameterMap.put(1, newValue);
@@ -80,6 +123,15 @@ class DAOTemplate {
             throw new ModelException(e);
         }
     }
+
+    /**
+     * select one entity by parameters
+     * @param query query
+     * @param parameterMap parameters
+     * @param mapper result mapper
+     * @param <T> entity to select
+     * @return selected entity
+     */
 
     static <T> T selectOne(String query, Map<Integer, Object> parameterMap, Mapper<T, ResultSet> mapper){
         DBConnection connection = TransactionManager.getConnection();

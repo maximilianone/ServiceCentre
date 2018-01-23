@@ -29,6 +29,10 @@ public class CommentDAOImpl implements CommentDAO{
 
     public CommentDAOImpl(){}
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public Integer create(Comment comment) {
         try {
@@ -37,7 +41,7 @@ public class CommentDAOImpl implements CommentDAO{
             parameterMap.put(2, comment.getOrderID());
             parameterMap.put(3, comment.getComment());
             int newID = DAOTemplate.executeInsert(CREATE, parameterMap);
-            logger.info("New comment added: " + comment);
+            logger.info("New comment added");
             return newID;
         }catch (com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException e){
             logger.error("Failed attempt to add comment by user with id "+comment.getUserID());
@@ -47,6 +51,10 @@ public class CommentDAOImpl implements CommentDAO{
             throw new ModelException(ADD_COMMENT_ERROR);
         }
     }
+
+    /**
+     *@inheritDoc
+     */
 
     @Override
     public List<FullComment> getAll(){
@@ -60,6 +68,10 @@ public class CommentDAOImpl implements CommentDAO{
         }
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public Boolean update(int commentID, Object newValue, String fieldName) {
         try {
@@ -71,6 +83,12 @@ public class CommentDAOImpl implements CommentDAO{
             throw new ModelException(COMMENT_UPDATE_ERROR);
         }
     }
+
+    /**
+     * create parametrized update query
+     * @param fieldName parameter name
+     * @return query
+     */
 
     private String createUpdateQuery(String fieldName) {
         return "Update Comments SET " + fieldName + " = ? WHERE comment_id = ?";

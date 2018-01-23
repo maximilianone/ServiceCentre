@@ -12,6 +12,9 @@ public class User {
 
     public enum Role {GUEST, CLIENT, ADMIN, MAIN, MASTER}
 
+    public User() {
+    }
+
     public User(Builder builder) {
         this.id = builder.id;
         this.firstName = builder.firstName;

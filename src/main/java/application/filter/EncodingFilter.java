@@ -5,6 +5,10 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
+/**
+ * encoding filter
+ */
+
 public class EncodingFilter implements Filter{
     private String encoding;
 

@@ -11,7 +11,8 @@ import java.sql.SQLException;
 
 public class CommentResultMapper implements Mapper<FullComment, ResultSet>, DBParameters {
     @Override
-    public FullComment map(ResultSet resultSet) throws SQLException{
+    public FullComment map(ResultSet resultSet){
+        try {
             Comment comment = new Comment.Builder()
                     .setId(resultSet.getInt(DB_COMMENT_ID))
                     .setUserID(resultSet.getInt(DB_USER_ID))
@@ -21,6 +22,10 @@ public class CommentResultMapper implements Mapper<FullComment, ResultSet>, DBPa
                     .build();
             String login = resultSet.getString(DB_LOGIN);
             return new FullComment(login, comment);
+
+        } catch (SQLException e) {
+            throw new ModelException(e);
+        }
     }
 }
 

@@ -10,6 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;;
 import java.io.IOException;
 
+/**
+ * command to change user info
+ */
+
 public class ChangeUserInfoCommand implements Command {
     private UserService userService;
 
@@ -17,9 +21,13 @@ public class ChangeUserInfoCommand implements Command {
         this.userService = userService;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException {
+            throws IOException {
         User user = new User.Builder()
                 .setId(Integer.parseInt(request.getParameter(USER_ID)))
                 .setFirstName(request.getParameter(USER_FIRST_NAME))
@@ -31,8 +39,17 @@ public class ChangeUserInfoCommand implements Command {
 
     }
 
+    /**
+     * change user info
+     *
+     * @param user new user info
+     * @param request request to server
+     * @param response response to server
+     * @throws IOException when failed to send redirect
+     */
+
     private void changeInfo(User user, HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, ModelException {
+            throws IOException{
         userService.changeInfo(user);
 
         request.getSession().setAttribute(USER_FIRST_NAME, user.getFirstName());

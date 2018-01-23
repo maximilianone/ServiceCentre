@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
+/**
+ * command to authorize user
+ */
+
 public class AuthorizationCommand implements Command {
     private UserService userService;
 
@@ -18,16 +22,28 @@ public class AuthorizationCommand implements Command {
         this.userService = userService;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException {
+            throws IOException {
 
         authorizeUser(request, response);
 
     }
 
+    /**
+     * authorize user
+     *
+     * @param request to server
+     * @param response to server
+     * @throws IOException when failed to send redirect
+     */
+
     private void authorizeUser(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, ModelException {
+            throws IOException {
         String login = request.getParameter(USER_LOGIN);
         String password = request.getParameter(USER_PASSWORD);
 

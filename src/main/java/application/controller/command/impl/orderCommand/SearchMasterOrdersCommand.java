@@ -13,6 +13,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * search orders which masters can execute or executing
+ */
+
 public class SearchMasterOrdersCommand implements Command, DBParameters {
     private OrderService orderService;
 
@@ -20,9 +24,13 @@ public class SearchMasterOrdersCommand implements Command, DBParameters {
         this.orderService = orderService;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException {
+            throws IOException {
 
             Object param = request.getParameter(SEARCH_VALUE);
             String name = request.getParameter(SEARCH_PARAMETER);
@@ -39,9 +47,28 @@ public class SearchMasterOrdersCommand implements Command, DBParameters {
 
     }
 
+    /**
+     * search orders which masters can execute
+     *
+     * @param param search parameter value
+     * @param name  search parameter name
+     * @param status status of orders which can be executed
+     * @return list of found orders
+     */
+
     private List<FullOrder> getOrders(Object param, String name, String status) {
         return orderService.getByStatus(param, name, status);
     }
+
+    /**
+     * search orders which are executed by specified master
+     *
+     * @param masterID master id whose orders to search
+     * @param param search parameter value
+     * @param name search parameter name
+     * @param statuses statuses of master's orders
+     * @return list of found orders
+     */
 
     private List<FullOrder> getOrdersForMaster(int masterID, Object param, String name, String... statuses) {
         List<FullOrder> orderList = new ArrayList<>();
@@ -53,6 +80,14 @@ public class SearchMasterOrdersCommand implements Command, DBParameters {
         }
         return orderList;
     }
+
+    /**
+     * send redirect to order list page
+     * @param orderList order list to show
+     * @param request request to server
+     * @param response response to server
+     * @throws IOException when failed to send redirect
+     */
 
     private void sendRedirect(List<FullOrder> orderList, HttpServletRequest request, HttpServletResponse response)
             throws IOException {

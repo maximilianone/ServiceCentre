@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * command to get all comments from database
+ */
+
 public class GetAllCommentsCommand implements Command {
     private CommentService commentService;
 
@@ -18,15 +22,25 @@ public class GetAllCommentsCommand implements Command {
         this.commentService = commentService;
     }
 
-    @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, SecurityException, IOException {
+    /**
+     *@inheritDoc
+     */
 
+    @Override
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
             showComments(request, response);
     }
 
+    /**
+     * get all comments from db and show them on page
+     *
+     * @param request request to server
+     * @param response response to server
+     * @throws IOException when failed to send redirect
+     */
+
     private void showComments(HttpServletRequest request, HttpServletResponse response)
-            throws IOException, ServletException, ModelException {
+            throws IOException{
         List<FullComment> commentList = commentService.getAll();
 
         request.getSession().setAttribute("comments", commentList);

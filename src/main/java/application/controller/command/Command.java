@@ -9,5 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public interface Command extends ErrorMessages, RequestParameters{
-    void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException;
+    /**
+     *execute command
+     *
+     * @param request request to server
+     * @param response response to server
+     * @throws SecurityException to indicate a security violation
+     * @throws IOException when failed to send redirect
+     */
+    void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException, SecurityException;
 }

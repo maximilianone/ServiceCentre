@@ -19,6 +19,10 @@ public class UserServiceImpl implements UserService, DBParameters {
         this.userDAO = userDAO;
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public Integer add(User user) {
         try {
@@ -31,6 +35,10 @@ public class UserServiceImpl implements UserService, DBParameters {
             throw new ModelException(e);
         }
     }
+
+    /**
+     *@inheritDoc
+     */
 
     @Override
     public List<User> getAll() {
@@ -45,6 +53,10 @@ public class UserServiceImpl implements UserService, DBParameters {
         }
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public List<User> getBy(Object param, String name) {
         try {
@@ -57,6 +69,10 @@ public class UserServiceImpl implements UserService, DBParameters {
             throw new ModelException(e);
         }
     }
+
+    /**
+     *@inheritDoc
+     */
 
     @Override
     public Boolean update(int userId, Object newValue, String fieldName) {
@@ -71,6 +87,10 @@ public class UserServiceImpl implements UserService, DBParameters {
         }
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public User authorization(String login, String password) {
         try {
@@ -84,6 +104,10 @@ public class UserServiceImpl implements UserService, DBParameters {
         }
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public User getById(int userID) {
         try {
@@ -96,6 +120,10 @@ public class UserServiceImpl implements UserService, DBParameters {
             throw new ModelException(e);
         }
     }
+
+    /**
+     *@inheritDoc
+     */
 
     @Override
     public Boolean changeInfo(User user) {
@@ -112,6 +140,10 @@ public class UserServiceImpl implements UserService, DBParameters {
         }
     }
 
+    /**
+     *@inheritDoc
+     */
+
     @Override
     public Boolean changePassword(int userID, String oldPassword, String password) {
         try {
@@ -125,6 +157,10 @@ public class UserServiceImpl implements UserService, DBParameters {
             throw new ModelException(e);
         }
     }
+
+    /**
+     *@inheritDoc
+     */
 
     @Override
     public void changeRole(int userID, String newRole, String oldRole){
