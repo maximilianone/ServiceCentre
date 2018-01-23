@@ -1,9 +1,8 @@
 package application.controller.command.impl.commentCommand;
 
-import application.controller.mapper.request.CommentRequestMapper;
 import application.controller.service.abstraction.CommentService;
 import application.model.dto.FullComment;
-import application.model.entity.Comment;
+import application.util.constants.RequestParameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -17,13 +16,13 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.endsWith;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
 @RunWith(MockitoJUnitRunner.class)
-public class AddCommentCommandTest {
+public class BanCommentCommandTest implements RequestParameters{
     @Mock
     private HttpServletRequest request;
     @Mock
@@ -32,28 +31,24 @@ public class AddCommentCommandTest {
     @Mock
     private CommentService commentService;
 
-    @Mock
-    private CommentRequestMapper commentRequestMapper;
-
     @InjectMocks
-    private AddCommentCommand addCommentCommand;
+    private BanCommentCommand banCommentCommand;
 
     @Mock
     private HttpSession session;
 
-
-    private Comment comment = new Comment();
     private List<FullComment> comments = new ArrayList<>();
 
     @Test
-    public void shouldCreateCommentAndRedirectToComment() throws Exception {
+    public void shouldBanCommentAndRedirectToComment() throws Exception {
         // Given
-        when(commentRequestMapper.map(request)).thenReturn(comment);
+        when(request.getParameter(COMMENT_ID)).thenReturn("1");
         when(commentService.getAll()).thenReturn(comments);
         when(request.getSession()).thenReturn(session);
         // When
-        addCommentCommand.execute(request, response);
+        banCommentCommand.execute(request, response);
         // Then
         verify(response).sendRedirect(endsWith("comment.jsp"));
     }
+
 }
