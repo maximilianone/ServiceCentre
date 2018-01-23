@@ -24,8 +24,6 @@ import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AddOrderCommandTest {
-    private static final int PRODUCT_ID = 10;
-
     @Mock
     private HttpServletRequest request;
     @Mock
@@ -49,7 +47,7 @@ public class AddOrderCommandTest {
     private Product product = new Product();
 
     @Test
-    public void shouldCreateOrderWithProductAndRedirectToIndex() throws Exception {
+    public void shouldCreateOrderAndRedirectToSuccessOrderCreation() throws Exception {
         // Given
         when(productRequestMapper.map(request)).thenReturn(product);
         when(orderRequestMapper.map(request)).thenReturn(order);
