@@ -29,44 +29,45 @@ public class OrderStatusChangeValidator implements ErrorMessages{
      */
 
 
-    public static void validateStatusChange(String oldStatus, String newStatus){
+    public static boolean validateStatusChange(String oldStatus, String newStatus){
         Status oStatus = validateStatus(oldStatus);
         Status nStatus = validateStatus(newStatus);
 
         switch (oStatus){
             case NEW:
                 if(nStatus==Status.ACCEPTED || nStatus ==Status.REJECTED){
-                    return;
+                    return true;
                 }
             case ACCEPTED:
                 if(nStatus==Status.AGREED || nStatus ==Status.CLOSED){
-                    return;
+                    return true;
                 }
             case AGREED:
                 if(nStatus==Status.WAITING_FOR_MASTER || nStatus ==Status.CLOSED){
-                    return;
+                    return true;
                 }
             case WAITING_FOR_MASTER:
                 if(nStatus==Status.RESERVED_BY_MASTER || nStatus ==Status.CLOSED){
-                    return;
+                    return true;
                 }
             case RESERVED_BY_MASTER:
                 if(nStatus==Status.PERFORMED || nStatus ==Status.CLOSED || nStatus ==Status.WAITING_FOR_MASTER){
-                    return;
+                    return true;
                 }
             case PERFORMED:
                 if(nStatus==Status.FULFILLED || nStatus ==Status.CLOSED){
-                    return;
+                    return true;
                 }
             case FULFILLED:
                 if(nStatus ==Status.CLOSED){
-                    return;
+                    return true;
                 }
             case REJECTED:
             case CLOSED:
                 logger.error(INVALID_STATUS_CHANGE);
                 throw new ModelException(INVALID_STATUS_CHANGE);
         }
+        return false;
     }
 
     /**

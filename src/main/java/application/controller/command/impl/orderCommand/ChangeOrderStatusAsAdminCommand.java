@@ -67,6 +67,7 @@ public class ChangeOrderStatusAsAdminCommand implements Command, DBParameters {
             throws IOException, ServletException {
         FullOrder order = orderService.getBy(orderID, DB_ORDER_ID).get(0);
         request.setAttribute("order", order);
-        request.getRequestDispatcher("/jsp/orderInfo.jsp").forward(request, response);
+        request.getRequestDispatcher("/jsp/orderInfo.jsp")
+                .forward(request, response);
     }
 }

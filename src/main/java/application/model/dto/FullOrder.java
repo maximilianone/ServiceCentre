@@ -12,6 +12,9 @@ public class FullOrder {
     private Order order;
     private Product product;
 
+    public FullOrder() {
+    }
+
     public FullOrder(Order order, Product product, String login, String masterLogin, String managerLogin) {
         this.order = order;
         this.product = product;

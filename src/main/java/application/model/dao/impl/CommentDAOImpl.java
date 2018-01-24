@@ -19,7 +19,7 @@ public class CommentDAOImpl implements CommentDAO{
             "VALUES(?, ?, ?)";
 
     private static final String SELECT_ALL = "SELECT * FROM Comments " +
-            "INNER JOIN USERS ON USERS.user_id = COMMENTS.user_id WHERE comments.comment_status='valid'";
+            "INNER JOIN USERS ON USERS.user_id = COMMENTS.user_id WHERE comments.comment_status='valid' ORDER BY comment_id DESC LIMIT 20";
 
     private CommentResultMapper mapper;
 

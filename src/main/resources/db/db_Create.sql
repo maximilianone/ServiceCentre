@@ -63,7 +63,7 @@ alter table comments add constraint fk_commenter_id foreign key (user_id, order_
 
 create or replace view admin as
 Select user_id as admin_id, login as admin_login
-From users where role = 'admin' or role='main_admin';
+From users where role = 'admin' or role='main';
 
 create or replace view masters as
 Select user_id as master_id, login as master_login

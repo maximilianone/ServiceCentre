@@ -24,7 +24,8 @@ public class OrderDAOImpl implements OrderDAO {
             "INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
             "INNER JOIN USERS ON USERS.user_id=orders.user_id " +
             "Left JOIN admin on orders.manager_id = admin.admin_id " +
-            "Left Join masters on orders.master_id = masters.master_id";
+            "Left Join masters on orders.master_id = masters.master_id " +
+            "ORDER BY date_of_placement LIMIT 10";
 
     private static final String CHECK_STATUS = "Select * From Orders " +
             "INNER JOIN PRODUCT ON Orders.product_id=Product.product_id " +
@@ -163,6 +164,7 @@ public class OrderDAOImpl implements OrderDAO {
         } else {
             query += "WHERE orders." + fieldName + " = ?";
         }
+        query+=" ORDER BY date_of_placement LIMIT 10";
         return query;
     }
 
@@ -190,6 +192,7 @@ public class OrderDAOImpl implements OrderDAO {
                 query += "and orders." + fieldName + " = ?";
                 break;
         }
+        query+=" ORDER BY date_of_placement LIMIT 10";
         return query;
     }
 

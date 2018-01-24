@@ -41,7 +41,6 @@ public class ShowAllMasterOrdersCommand implements Command, DBParameters {
             }
 
             sendRedirect(orderList, request, response);
-
     }
 
     /**

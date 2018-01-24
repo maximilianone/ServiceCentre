@@ -19,7 +19,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String CREATE = "INSERT INTO USERS(first_name,last_name,login, user_password, email, phone) " +
             "VALUES(?, ?, ?, ?, ?, ?)";
 
-    private static final String SELECT_ALL = "SELECT * FROM USERS";
+    private static final String SELECT_ALL = "SELECT * FROM USERS ORDER BY login Limit 10";
 
     private static final String AUTHORIZATION = "SELECT * FROM USERS WHERE login = ? and user_password = ?";
 
@@ -211,6 +211,7 @@ public class UserDAOImpl implements UserDAO {
      */
 
     private String createSelectQuery(String fieldName) {
-        return "Select * from Users WHERE " + fieldName + " = ?";
+        return "Select * from Users WHERE " + fieldName + " = ? " +
+                "ORDER BY login Limit 10";
     }
 }

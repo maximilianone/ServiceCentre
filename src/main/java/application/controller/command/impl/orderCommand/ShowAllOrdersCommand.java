@@ -51,7 +51,7 @@ public class ShowAllOrdersCommand implements Command, DBParameters {
 
     private List<FullOrder> getAllOrders(HttpServletRequest request) {
         request.getSession().setAttribute(AS_ADMIN, "false");
-        return orderService.getAll();
+        return orderService.getBy(ORDER_STATUS_NEW, DB_ORDER_STATUS);
     }
 
     /**

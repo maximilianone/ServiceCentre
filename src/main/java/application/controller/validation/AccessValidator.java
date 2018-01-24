@@ -1,6 +1,7 @@
 package application.controller.validation;
 
 import application.controller.command.CommadList;
+import application.model.entity.User;
 import application.model.entity.User.Role;
 import application.util.constants.RequestParameters;
 
@@ -23,17 +24,13 @@ public class AccessValidator implements CommadList, RequestParameters {
     private Map<String, String> commandRolePair;
 
     private String guest;
-    private String client;
-    private String master;
-    private String admin;
-    private String main;
 
     private AccessValidator() {
         guest = Role.GUEST.name() + "_";
-        client = Role.CLIENT.name() + "_";
-        master = Role.MASTER.name() + "_";
-        admin = Role.ADMIN.name() + "_";
-        main = Role.MAIN.name()+ "_";
+        String client = Role.CLIENT.name() + "_";
+        String master = Role.MASTER.name() + "_";
+        String admin = Role.ADMIN.name() + "_";
+        String main = Role.MAIN.name() + "_";
 
         commandRolePair = new HashMap<>();
 
