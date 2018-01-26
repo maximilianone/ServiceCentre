@@ -35,7 +35,7 @@
     			            <input type="text" name="productName" pattern="[A-ZА-яа-яa-z0-9ІЇії ]{2,40}" class="form-control" required>
     			            <br>
     			            <fmt:message key="order.info.problem" bundle="${locale}"/><br>
-                            <textarea name="problemDescription" id="test" pattern="[a-zA-Zа-яА-Я0-9ІЇїі ]{1,100}" rows="10" cols="45" class="form-control" required></textarea>
+                            <textarea name="problemDescription" id="test" pattern="[a-zA-Zа-яА-Я0-9ІЇїі ,;'-]{1,100}" rows="10" cols="45" class="form-control" required></textarea>
                             <br>
     			            <br>
     			            <input type="hidden" name="command" value="addOrder">

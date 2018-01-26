@@ -51,7 +51,7 @@
                         <fmt:message key="comment.orderId" bundle="${locale}"/><br>
                         <input type="text" name="orderID" pattern="[0-9]{1,20}" class="form-control" required>
                         <br><fmt:message key="comment.content" bundle="${locale}"/><br>
-                        <textarea name="commentContent" id="test" pattern="[a-zA-Zа-яА-Я0-9ІЇїі ]{1,100}" rows="10" cols="45" class="form-control" required></textarea>
+                        <textarea name="commentContent" id="test" pattern="[a-zA-Zа-яА-Я0-9ІЇїі ,;'-]{1,100}" rows="10" cols="45" class="form-control" required></textarea>
                         <br>
                         <input type="hidden" name="command" value ="addComment">
                         <input type="hidden" name="userID" value = "${sessionScope.userID}" >
