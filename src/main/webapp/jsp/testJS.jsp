@@ -3,7 +3,7 @@
 
 <head>
 
-<script type="text/javascript" src="//code.jquery.com/jquery-1.8.3.js"></script>
+<script type="text/javascript" src="/ServiceCentre/js/jquery-1.8.3.js"></script>
 
 <script type='text/javascript'>
     $(window).load(function(){
