@@ -16,6 +16,7 @@
 
     <body>
         <jsp:include page="/jsp/header.jsp"/>
+        <p>test ci</p>
     </form>
 
 </html>
